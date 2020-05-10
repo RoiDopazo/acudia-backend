@@ -20,7 +20,6 @@ custom:
     start:
       port: 8000
       inMemory: false
-      dbPath: 'dynamodb_local_data'
       migrate: false
 
   appSync: # appsync plugin configuration
