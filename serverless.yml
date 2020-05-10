@@ -18,7 +18,7 @@ custom:
       - local
       - dev
     start:
-      port: 8000
+      port: ${env:PORT}
       inMemory: false
       migrate: false
 
