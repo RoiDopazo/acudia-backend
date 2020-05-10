@@ -4,7 +4,7 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "start": "serverless offline start --stage local",
+    "start": "node_modules/.bin/serverless offline start",
     "start:dev": "serverless offline start --stage dev",
     "postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
   },
