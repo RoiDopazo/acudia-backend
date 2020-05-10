@@ -21,20 +21,18 @@ custom:
       port: ${env:PORT}
       inMemory: false
       migrate: false
-
-  appSync: # appsync plugin configuration
-    name: acudia-appsync
-    authenticationType: API_KEY # use API_KEY in this tutorial
-    dataSources: ${file(resources/data-sources.yml)}
-    mappingTemplates: ${file(resources/resolvers.yml)}
-    schema: schema.graphql
-
-  appsync-offline: # appsync-offline configuration
-    port: ${env:PORT}
-    dynamodb:
-      client:
-        endpoint: 'http://localhost:8000'
-        region: localhost
+  # appSync: # appsync plugin configuration
+  #   name: acudia-appsync
+  #   authenticationType: API_KEY # use API_KEY in this tutorial
+  #   dataSources: ${file(resources/data-sources.yml)}
+  #   mappingTemplates: ${file(resources/resolvers.yml)}
+  #   schema: schema.graphql
+  # appsync-offline: # appsync-offline configuration
+  #   port: ${env:PORT}
+  #   dynamodb:
+  #     client:
+  #       endpoint: 'http://localhost:8000'
+  #       region: localhost
 
 # functions:
 #   hello:
