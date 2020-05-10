@@ -1,0 +1,31 @@
+# Entities
+type Client {
+  id: ID!
+  name: String!
+}
+
+# Inputs
+input CreateClientInput {
+  name: String!
+}
+
+# List responses
+type ClientListResponse {
+  items: [Client]
+}
+
+# Define the queries
+type Query {
+  listClients: ClientListResponse
+}
+
+# Define the mutations
+type Mutation {
+  createClient(input: CreateClientInput): Client
+}
+
+# Define the schema
+schema {
+  query: Query
+  mutation: Mutation
+}

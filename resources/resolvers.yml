@@ -1,0 +1,10 @@
+- dataSource: clients
+  type: Query
+  field: listClients # from the query in schema.graphql
+  request: 'clients/listClients-request-template.vtl'
+  response: 'clients/listClients-response-template.vtl'
+- dataSource: clients
+  type: Mutation
+  field: createClient # from the mutation in schema.graphql
+  request: 'clients/createClient-request-template.vtl'
+  response: 'clients/createClient-response-template.vtl'
