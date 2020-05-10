@@ -7,3 +7,5 @@ jspm_packages
 
 .dynamodb
 dynamodb_local_data
+
+.env.*

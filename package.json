@@ -5,6 +5,7 @@
   "main": "handler.js",
   "scripts": {
     "start": "serverless offline start --stage local",
+    "start:dev": "serverless offline start --stage dev",
     "postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
   },
   "repository": {
@@ -24,6 +25,7 @@
     "prettier": "^2.0.5",
     "serverless-appsync-offline": "^1.4.0",
     "serverless-appsync-plugin": "^1.3.0",
+    "serverless-dotenv-plugin": "^2.4.2",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^6.1.5",
     "velocityjs": "^2.0.0"

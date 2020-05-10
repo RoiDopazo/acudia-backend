@@ -3,9 +3,10 @@ service: acudia-backend
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'local'}
+  stage: ${env:STAGE}
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-dynamodb-local
   - serverless-appsync-plugin
   - serverless-appsync-offline
@@ -15,6 +16,7 @@ custom:
   dynamodb:
     stages:
       - local
+      - dev
     start:
       port: 8000
       inMemory: false
@@ -29,7 +31,7 @@ custom:
     schema: schema.graphql
 
   appsync-offline: # appsync-offline configuration
-    port: 62222
+    port: ${env:PORT}
     dynamodb:
       client:
         endpoint: 'http://localhost:8000'
