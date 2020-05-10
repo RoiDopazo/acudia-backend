@@ -4,7 +4,7 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "start": "serverless dynamodb install && serverless offline start --stage dev",
+    "start": "NODE_ENV=dev serverless dynamodb install && serverless dynamodb start",
     "start:dev": "serverless offline start --stage dev",
     "postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
   },
