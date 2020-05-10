@@ -1,0 +1,14 @@
+Resources:
+  clients: # name of the resource to be use later
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ClientTable # name of the table
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id # partition key
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1

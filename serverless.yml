@@ -1,0 +1,43 @@
+service: acudia-backend
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'local'}
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-appsync-plugin
+  - serverless-appsync-offline
+  - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: false
+      dbPath: 'dynamodb_local_data'
+      migrate: false
+
+  appSync: # appsync plugin configuration
+    name: acudia-appsync
+    authenticationType: API_KEY # use API_KEY in this tutorial
+    dataSources: ${file(resources/data-sources.yml)}
+    mappingTemplates: ${file(resources/resolvers.yml)}
+    schema: schema.graphql
+
+  appsync-offline: # appsync-offline configuration
+    port: 62222
+    dynamodb:
+      client:
+        endpoint: 'http://localhost:8000'
+        region: localhost
+
+# functions:
+#   hello:
+#     handler: handler.hello
+
+resources:
+  - ${file(resources/dynamodb-tables.yml)}

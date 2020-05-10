@@ -1,0 +1,4 @@
+- type: AMAZON_DYNAMODB
+  name: clients # name of the resource
+  config:
+    tableName: ClientTable # name of our DynamoDB table
