@@ -1,1 +1,1 @@
-web: npm run start:dev -- --o 0.0.0.0
+web: npm run start -- --stage dev --o 0.0.0.0
