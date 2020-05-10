@@ -34,9 +34,5 @@ custom:
   #       endpoint: 'http://localhost:8000'
   #       region: localhost
 
-# functions:
-#   hello:
-#     handler: handler.hello
-
 resources:
   - ${file(resources/dynamodb-tables.yml)}
