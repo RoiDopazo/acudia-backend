@@ -13,14 +13,13 @@ plugins:
   - serverless-offline
 
 custom:
-  # dynamodb:
-  #   stages:
-  #     - local
-  #     - dev
-  #   start:
-  #     port: ${env:DB_PORT}
-  #     inMemory: false
-  #     migrate: false
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: ${env:DB_PORT}
+      inMemory: false
+      migrate: false
   appSync: # appsync plugin configuration
     name: acudia-appsync
     authenticationType: API_KEY # use API_KEY in this tutorial
@@ -31,7 +30,7 @@ custom:
     port: ${env:PORT}
     dynamodb:
       client:
-        endpoint: http://localhost:8000
+        endpoint: ${env:DB_HOST}
         region: localhost
 
 resources:
