@@ -31,7 +31,7 @@ custom:
     port: ${env:PORT}
     dynamodb:
       client:
-        endpoint: ${env:DB_HOST}
+        endpoint: http://localhost:8000
         region: localhost
 
 resources:
