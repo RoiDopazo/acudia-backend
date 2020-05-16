@@ -6,7 +6,7 @@ name: heroku
 # events but only for the master branch
 on:
   push:
-    branches: [ ACUDIA-4 ]
+    branches: [ feature/ACUDIA-4 ]
 
 jobs:
   build:
