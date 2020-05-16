@@ -17,7 +17,7 @@ custom:
     stages:
       - local
     start:
-      port: ${env:DB_PORT}
+      port: ${env:PORT}
       inMemory: false
       migrate: false
   appSync: # appsync plugin configuration
