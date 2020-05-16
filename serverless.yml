@@ -16,9 +16,8 @@ custom:
   dynamodb:
     stages:
       - local
-      - dev
     start:
-      port: ${env:PORT}
+      port: ${env:DB_PORT}
       inMemory: false
       migrate: false
   appSync: # appsync plugin configuration
