@@ -27,7 +27,7 @@ custom:
     dataSources: ${file(resources/data-sources.yml)}
     mappingTemplates: ${file(resources/resolvers.yml)}
     schema: schema.graphql
-  appsync-offline: # appsync-offline configuratio
+  appsync-offline: # appsync-offline configuration
     port: ${env:PORT}
     dynamodb:
       client:
