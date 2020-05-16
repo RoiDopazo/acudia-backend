@@ -1,1 +1,1 @@
-web: npm run start:dynamo -- --o 0.0.0.0 --stage dev
+web: npm run start:dynamo:dev -- --o 0.0.0.0 --stage dev
