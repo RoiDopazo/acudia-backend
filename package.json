@@ -6,7 +6,7 @@
   "scripts": {
     "start": "serverless offline start --stage local",
     "start:dynamo": "serverless dynamodb install && serverless dynamodb start",
-    "start:dev": "serverless offline start --stage dev",
+    "start:dev": "SLS_DEBUG=* serverless offline start --stage dev",
     "start:dynamo:dev": "serverless dynamodb install && serverless dynamodb start --stage dev",
     "postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
   },
