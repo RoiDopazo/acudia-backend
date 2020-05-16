@@ -30,4 +30,3 @@ jobs:
           heroku_app_name: "acudia-backend" #Must be unique in Heroku
           heroku_email: "acudia.project@gmail.com"
         
-      
