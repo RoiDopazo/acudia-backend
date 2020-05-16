@@ -16,6 +16,7 @@ custom:
   dynamodb:
     stages:
       - local
+      - dev
     start:
       port: ${env:PORT}
       inMemory: false
