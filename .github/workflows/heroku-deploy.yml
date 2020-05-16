@@ -16,5 +16,10 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.0.4 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "acudia-db" #Must be unique in Heroku
+          heroku_email: "acudia.project@gmail.com"
+      - uses: akhileshns/heroku-deploy@v3.0.4 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "acudia-backend" #Must be unique in Heroku
           heroku_email: "acudia.project@gmail.com"
