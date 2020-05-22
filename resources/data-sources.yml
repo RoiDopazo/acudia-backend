@@ -2,3 +2,18 @@
   name: clients # name of the resource
   config:
     tableName: ClientTable # name of our DynamoDB table
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - 'dynamodb:GetItem'
+          - 'dynamodb:BatchGetItem'
+          - 'dynamodb:BatchWriteItem'
+          - 'dynamodb:DeleteItem'
+          - 'dynamodb:GetItem'
+          - 'dynamodb:PutItem'
+          - 'dynamodb:Query'
+          - 'dynamodb:UpdateItem'
+          - 'dynamodb:Scan'
+        Resource:
+          - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/ClientTable'
+          - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/ClientTable/*'
