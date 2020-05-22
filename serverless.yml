@@ -4,6 +4,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${env:STAGE}
+  region: ${env:REGION}
 
 plugins:
   - serverless-dotenv-plugin
@@ -13,19 +14,29 @@ plugins:
   - serverless-offline
 
 custom:
+  accountId: ${env:AWS_ACCOUNT_ID}
+  region: ${env:REGION}
+
   dynamodb:
     stages:
       - local
     start:
       port: ${env:DB_PORT}
+      dbPath: 'dynamodb_local_data'
       inMemory: false
       migrate: false
+
   appSync: # appsync plugin configuration
     name: acudia-appsync
-    authenticationType: API_KEY # use API_KEY in this tutorial
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      awsRegion: ${env:REGION}
+      defaultAction: ALLOW
+      userPoolId: ${env:AWS_USER_POOL_ID}
     dataSources: ${file(resources/data-sources.yml)}
     mappingTemplates: ${file(resources/resolvers.yml)}
     schema: schema.graphql
+
   appsync-offline: # appsync-offline configuration
     port: ${env:PORT}
     dynamodb:

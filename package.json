@@ -7,6 +7,8 @@
     "start": "serverless offline start --stage local",
     "start:dev": "serverless offline start",
     "start:dynamo:dev": "serverless dynamodb install && serverless dynamodb start",
+    "deploy": "serverless deploy --stage development",
+    "remove": "serverless remove --stage development",
     "postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
   },
   "repository": {
