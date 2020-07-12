@@ -2,6 +2,8 @@
 type Client {
   email: ID!
   name: String!
+  createdAt: Float
+  updatedAt: Float
 }
 
 # Inputs
@@ -22,6 +24,8 @@ type Acudier {
   name: String!
   genre: String!
   birthDate: Date
+  createdAt: Float
+  updatedAt: Float
 }
 input CreateAcudierInput {
   name: String!
