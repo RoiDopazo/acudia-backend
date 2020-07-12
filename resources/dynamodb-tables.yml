@@ -4,10 +4,24 @@ Resources:
     Properties:
       TableName: ClientTable # name of the table
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: email
           AttributeType: S
       KeySchema:
-        - AttributeName: id # partition key
+        - AttributeName: email # partition key
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  acudiers: # name of the resource to be use later
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: AcudierTable # name of the table
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email # partition key
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1
