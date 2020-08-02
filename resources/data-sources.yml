@@ -5,14 +5,7 @@
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
-          - 'dynamodb:GetItem'
-          - 'dynamodb:BatchGetItem'
-          - 'dynamodb:BatchWriteItem'
-          - 'dynamodb:DeleteItem'
-          - 'dynamodb:GetItem'
           - 'dynamodb:PutItem'
-          - 'dynamodb:Query'
-          - 'dynamodb:UpdateItem'
           - 'dynamodb:Scan'
         Resource:
           - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/ClientTable'
@@ -25,14 +18,7 @@
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
-          - 'dynamodb:GetItem'
-          - 'dynamodb:BatchGetItem'
-          - 'dynamodb:BatchWriteItem'
-          - 'dynamodb:DeleteItem'
-          - 'dynamodb:GetItem'
           - 'dynamodb:PutItem'
-          - 'dynamodb:Query'
-          - 'dynamodb:UpdateItem'
           - 'dynamodb:Scan'
         Resource:
           - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudierTable'

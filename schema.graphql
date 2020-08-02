@@ -17,13 +17,11 @@ type ClientListResponse {
   items: [Client]
 }
 
-scalar Date
-
 type Acudier {
   email: ID!
   name: String!
   genre: String!
-  birthDate: Date
+  birthDate: AWSDate!
   createdAt: Float
   updatedAt: Float
 }
@@ -31,6 +29,7 @@ input CreateAcudierInput {
   name: String!
   email: String!
   genre: String!
+  birthDate: AWSDate!
 }
 
 type AcudierListResponse {
