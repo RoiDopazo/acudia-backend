@@ -1,4 +1,5 @@
-$util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) #TODO: avoid reset createdAt when updating
+## TODO: avoid reset createdAt when updating
+$util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
 $util.qr($ctx.args.input.put("updatedAt", $util.time.nowEpochMilliSeconds()))
 
 ## Validate valid genre
