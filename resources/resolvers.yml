@@ -8,3 +8,14 @@
   field: createClient # from the mutation in schema.graphql
   request: 'clients/createClient-request-template.vtl'
   response: 'clients/createClient-response-template.vtl'
+
+- dataSource: acudiers
+  type: Query
+  field: listAcudiers # from the query in schema.graphql
+  request: 'acudiers/listAcudiers-request-template.vtl'
+  response: 'acudiers/listAcudiers-response-template.vtl'
+- dataSource: acudiers
+  type: Mutation
+  field: createAcudier # from the mutation in schema.graphql
+  request: 'acudiers/createAcudier-request-template.vtl'
+  response: 'acudiers/createAcudier-response-template.vtl'

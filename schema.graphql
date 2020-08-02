@@ -1,12 +1,15 @@
 # Entities
 type Client {
-  id: ID!
+  email: ID!
   name: String!
+  createdAt: Float
+  updatedAt: Float
 }
 
 # Inputs
 input CreateClientInput {
   name: String!
+  email: String!
 }
 
 # List responses
@@ -14,14 +17,35 @@ type ClientListResponse {
   items: [Client]
 }
 
+type Acudier {
+  email: ID!
+  name: String!
+  genre: String!
+  birthDate: AWSDate!
+  createdAt: Float
+  updatedAt: Float
+}
+input CreateAcudierInput {
+  name: String!
+  email: String!
+  genre: String!
+  birthDate: AWSDate!
+}
+
+type AcudierListResponse {
+  items: [Acudier]
+}
+
 # Define the queries
 type Query {
   listClients: ClientListResponse
+  listAcudiers: AcudierListResponse
 }
 
 # Define the mutations
 type Mutation {
   createClient(input: CreateClientInput): Client
+  createAcudier(input: CreateAcudierInput): Acudier
 }
 
 # Define the schema
