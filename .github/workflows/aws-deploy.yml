@@ -37,6 +37,6 @@ jobs:
     - run: npm install
     - run: npm run deploy
       env:
-        REGION: ue-west-1
+        REGION: eu-west-1
         AWS_USER_POOL_ID: ${{ secrets.AWS_DEV_USER_POOL_ID }}
         AWS_ACCOUNT_ID: ${{ secrets.AWS_DEV_ACCOUNT_ID }}
