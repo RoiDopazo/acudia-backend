@@ -26,9 +26,17 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        
+    - name: Configure AWS credentials from Test account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_DEV_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
+      
     - run: npm install
     - run: npm run deploy
       env:
-        REGION: ${{ secrets.AWS_DEV_REGION }}
+        REGION: ue-west-1
         AWS_USER_POOL_ID: ${{ secrets.AWS_DEV_USER_POOL_ID }}
         AWS_ACCOUNT_ID: ${{ secrets.AWS_DEV_ACCOUNT_ID }}
