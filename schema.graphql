@@ -2,34 +2,45 @@
 type Client {
   email: ID!
   name: String!
+  secondName: String!
+  photoUrl: String
   createdAt: Float
   updatedAt: Float
-}
-
-# Inputs
-input CreateClientInput {
-  name: String!
-  email: String!
-}
-
-# List responses
-type ClientListResponse {
-  items: [Client]
+  deletedAt: Float
 }
 
 type Acudier {
   email: ID!
   name: String!
+  secondName: String!
   genre: String!
   birthDate: AWSDate!
+  photoUrl: String
   createdAt: Float
   updatedAt: Float
+  deletedAt: Float
 }
+
+# Inputs
+input CreateClientInput {
+  name: String!
+  secondName: String!
+  email: String!
+  photoUrl: String
+}
+
 input CreateAcudierInput {
   name: String!
+  secondName: String!
   email: String!
   genre: String!
   birthDate: AWSDate!
+  photoUrl: String
+}
+
+# List responses
+type ClientListResponse {
+  items: [Client]
 }
 
 type AcudierListResponse {
