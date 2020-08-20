@@ -1,8 +1,10 @@
 # Entities
 type Client {
-  email: ID!
+  PK: String!
+  SK: String!
   name: String!
   secondName: String!
+  email: String!
   photoUrl: String
   createdAt: Float
   updatedAt: Float
@@ -10,11 +12,13 @@ type Client {
 }
 
 type Acudier {
-  email: ID!
-  name: String!
-  secondName: String!
-  genre: String!
-  birthDate: AWSDate!
+  PK: String!
+  SK: String!
+  name: String
+  secondName: String
+  email: String
+  genre: String
+  birthDate: AWSDate
   photoUrl: String
   createdAt: Float
   updatedAt: Float
