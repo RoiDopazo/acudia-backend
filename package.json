@@ -8,6 +8,7 @@
     "start:local": "nodemon --watch schema.graphql --watch 'resources/**/*' --watch 'mapping-templates/**/*' -e vtl,yml  --exec npm run start",
     "start:dev": "serverless offline start",
     "start:dynamo:dev": "serverless dynamodb install && serverless dynamodb start",
+    "hosp:data:local": "serverless invoke local --function hospIntegration",
     "deploy": "serverless deploy --stage development",
     "remove": "serverless remove --stage development",
     "postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
