@@ -1,28 +1,30 @@
 Resources:
-  clients: # name of the resource to be use later
+  acudia: # name of the resource to be use later
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ClientTable # name of the table
+      TableName: AcudiaTable # name of the table
       AttributeDefinitions:
-        - AttributeName: email
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
           AttributeType: S
       KeySchema:
-        - AttributeName: email # partition key
+        - AttributeName: PK
           KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-
-  acudiers: # name of the resource to be use later
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: AcudierTable # name of the table
-      AttributeDefinitions:
-        - AttributeName: email
-          AttributeType: S
-      KeySchema:
-        - AttributeName: email # partition key
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 1
-        WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: InvertedIndex
+          KeySchema:
+            - AttributeName: SK
+              KeyType: HASH
+            - AttributeName: PK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1

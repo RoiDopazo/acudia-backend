@@ -1,20 +1,9 @@
-- dataSource: clients
-  type: Query
-  field: listClients # from the query in schema.graphql
-  request: 'clients/listClients-request-template.vtl'
-  response: 'clients/listClients-response-template.vtl'
-- dataSource: clients
+- dataSource: acudia
   type: Mutation
-  field: createClient # from the mutation in schema.graphql
+  field: createClient
   request: 'clients/createClient-request-template.vtl'
   response: 'clients/createClient-response-template.vtl'
-
-- dataSource: acudiers
-  type: Query
-  field: listAcudiers # from the query in schema.graphql
-  request: 'acudiers/listAcudiers-request-template.vtl'
-  response: 'acudiers/listAcudiers-response-template.vtl'
-- dataSource: acudiers
+- dataSource: acudia
   type: Mutation
   field: createAcudier # from the mutation in schema.graphql
   request: 'acudiers/createAcudier-request-template.vtl'

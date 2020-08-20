@@ -1,11 +1,29 @@
 $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
-$util.qr($ctx.args.input.put("updatedAt", $util.time.nowEpochMilliSeconds()))
+
+#set($PK = "CLIENT#$ctx.args.input.email")
+#set($SK = "PROFILE")
 
 {
   "version" : "2017-02-28",
   "operation" : "PutItem",
-  "key" : {
-    "email": $util.dynamodb.toDynamoDBJson($ctx.args.input.email),
+  "key": {
+    "PK": {
+      "S": "$PK"
+    },
+    "SK": {
+      "S": "$SK"
+    }
   },
-  "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input)
+  "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input),
+  "condition": {
+    "expression": "NOT contains(#PK, :value)",
+    "expressionValues": {
+      ":value": {
+        "S": "$ctx.args.input.email"
+      }
+    },
+    "expressionNames": {
+      "#PK": "PK"
+    }
+  }
 }
