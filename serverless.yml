@@ -1,5 +1,13 @@
 service: acudia-backend
 
+package:
+  excludeDevDependencies: true
+  individually: true
+  exclude:
+    - node_modules/**
+    - tmp/**
+    - .git/**
+
 provider:
   name: aws
   runtime: nodejs12.x
