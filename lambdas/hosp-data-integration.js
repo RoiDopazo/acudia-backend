@@ -1,4 +1,4 @@
-const TABLE = 'AcudiaTable';
+const TABLE = 'Hospitals';
 const AWS = require('aws-sdk');
 const CNH = require('../.local/CNH.json');
 
@@ -18,6 +18,14 @@ const s3 = new AWS.S3();
 
 const AWS_S3_DATA_BUCKET = process.env.AWS_S3_DATA_BUCKET;
 const AWS_S3_DATA_FILE = 'CNH.json';
+
+const capitalize = function (text = '') {
+  const lc_text = text ? text.toLowerCase() : '';
+  return lc_text
+    .replace(/(?:^|\s(?!de|del|y\s)|\/|-)\S/g, (a) => a.toUpperCase())
+    .replace(/\s+/g, ' ')
+    .trim();
+};
 
 const parseJSON = (jsonFile) => {
   /*
@@ -47,18 +55,10 @@ const parseJSON = (jsonFile) => {
   X: 'EMAIL',
 */
 
-  const capitalize = function (text = '') {
-    const lc_text = text ? text.toLowerCase() : '';
-    return lc_text
-      .replace(/(?:^|\s(?!de|del|y\s)|\/|-)\S/g, (a) => a.toUpperCase())
-      .replace(/\s+/g, ' ')
-      .trim();
-  };
-
   const catalogue = jsonFile['DIRECTORIO DE HOSPITALES'];
   catalogue.splice(0, 1);
 
-  const data = catalogue.slice(0, 80).map((el) => {
+  const data = catalogue.slice(0, 25).map((el) => {
     const numBeds = parseInt(el.O);
     return {
       id: parseFloat(el.A),
@@ -107,8 +107,8 @@ exports.job = async (event) => {
     params[TABLE].push({
       PutRequest: {
         Item: {
-          PK: `HOSP#${d.id}`,
-          SK: 'HOSP_DATA',
+          PK: capitalize(d.province),
+          SK: `HOSP#${d.id}`,
         },
       },
     });

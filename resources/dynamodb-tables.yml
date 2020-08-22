@@ -1,8 +1,8 @@
 Resources:
-  acudia: # name of the resource to be use later
+  acudia:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: AcudiaTable # name of the table
+      TableName: AcudiaTable
       AttributeDefinitions:
         - AttributeName: PK
           AttributeType: S
@@ -23,6 +23,34 @@ Resources:
               KeyType: HASH
             - AttributeName: PK
               KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+
+  hospitals:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Hospitals
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+        - IndexName: InvertedIndex
+          KeySchema:
+            - AttributeName: SK
+              KeyType: HASH
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
