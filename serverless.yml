@@ -44,5 +44,14 @@ custom:
         endpoint: ${env:DB_HOST}
         region: localhost
 
+functions:
+  hospIntegration:
+    handler: lambdas/hosp-data-integration.job
+    description: Function to parse hospital data and store in the db
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action: dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable
+
 resources:
   - ${file(resources/dynamodb-tables.yml)}

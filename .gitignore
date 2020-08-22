@@ -9,3 +9,6 @@ jspm_packages
 dynamodb_local_data
 
 .env.*
+
+# Files for local development
+.local
