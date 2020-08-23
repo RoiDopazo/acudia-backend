@@ -96,38 +96,54 @@ const getFromS3 = async () => {
 };
 
 exports.job = async (event) => {
-  const jsonFile = isLocal ? CNH : await getFromS3();
+  try {
+    const jsonFile = isLocal ? CNH : await getFromS3();
 
-  const data = parseJSON(jsonFile);
+    const data = parseJSON(jsonFile);
 
-  const params = {
-    [TABLE]: [],
-  };
-  data.forEach((d) => {
-    params[TABLE].push({
-      PutRequest: {
-        Item: {
-          PK: capitalize(d.province),
-          SK: `HOSP#${d.id}`,
+    const params = {
+      [TABLE]: [],
+    };
+    data.forEach((d) => {
+      params[TABLE].push({
+        PutRequest: {
+          Item: {
+            PK: capitalize(d.province),
+            SK: `HOSP#${d.id}`,
+            name: d.name,
+            address: d.address,
+            telephone: d.telephone,
+            province: d.province,
+            municipallity: d.municipallity,
+            state: d.state,
+            postal_code: d.postal_code,
+            purpose: d.purpose,
+            isPrivate: d.isPrivate,
+            email: d.email,
+            num_beds: d.numBeds,
+          },
         },
-      },
-    });
-  });
-
-  var i;
-  var j;
-  var temparray;
-  const chunk = 25;
-  for (i = 0, j = params[TABLE].length; i < j; i += chunk) {
-    temparray = params[TABLE].slice(i, i + chunk);
-
-    docClient
-      .batchWrite({ RequestItems: { [TABLE]: temparray } })
-      .promise()
-      .then((response) => response)
-      .catch((err) => {
-        console.log(err);
-        return err;
       });
+    });
+
+    var i;
+    var j;
+    var temparray;
+    const chunk = 25;
+    console.log(params[TABLE].length);
+    for (i = 0, j = params[TABLE].length; i < j; i += chunk) {
+      temparray = params[TABLE].slice(i, i + chunk);
+
+      docClient
+        .batchWrite({ RequestItems: { [TABLE]: temparray } })
+        .promise()
+        .then((response) => response)
+        .catch((err) => {
+          console.log(err);
+          return err;
+        });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };

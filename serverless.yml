@@ -7,6 +7,7 @@ package:
     - node_modules/**
     - tmp/**
     - .git/**
+    - dynamodb_local_data/**
 
 provider:
   name: aws
@@ -16,6 +17,7 @@ provider:
 
 plugins:
   - serverless-dotenv-plugin
+  - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-appsync-plugin
   - serverless-appsync-offline
@@ -58,8 +60,11 @@ functions:
     description: Function to parse hospital data and store in the db
     iamRoleStatements:
       - Effect: 'Allow'
-        Action: dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable
+        Action: dynamodb:BatchWriteItem
+        Resource: arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/Hospitals
+      - Effect: 'Allow'
+        Action: s3:getObject
+        Resource: arn:aws:s3:::acudia-dev-data-bucket/*
 
 resources:
   - ${file(resources/dynamodb-tables.yml)}
