@@ -42,19 +42,18 @@ input CreateAcudierInput {
   photoUrl: String
 }
 
-# List responses
-type ClientListResponse {
-  items: [Client]
+input QueryClientInput {
+  id: String!
 }
 
-type AcudierListResponse {
-  items: [Acudier]
+input QueryAcudierInput {
+  id: String!
 }
 
 # Define the queries
 type Query {
-  listClients: ClientListResponse
-  listAcudiers: AcudierListResponse
+  getClientByID(input: QueryClientInput): Client
+  getAcudierByID(input: QueryAcudierInput): Acudier
 }
 
 # Define the mutations

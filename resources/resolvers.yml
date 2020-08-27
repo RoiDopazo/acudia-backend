@@ -2,9 +2,20 @@
   type: Mutation
   field: createClient
   request: 'clients/createClient-request-template.vtl'
-  response: 'clients/createClient-response-template.vtl'
+  response: 'common/common-response-template.vtl'
 - dataSource: acudia
   type: Mutation
-  field: createAcudier # from the mutation in schema.graphql
+  field: createAcudier
   request: 'acudiers/createAcudier-request-template.vtl'
-  response: 'acudiers/createAcudier-response-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+- dataSource: acudia
+  type: Query
+  field: getClientByID
+  request: 'clients/getClientByID-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+- dataSource: acudia
+  type: Query
+  field: getAcudierByID
+  request: 'acudiers/getAcudierByID-request-template.vtl'
+  response: 'common/common-response-template.vtl'
