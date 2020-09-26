@@ -91,6 +91,11 @@ input QueryAcudierInput {
   id: String!
 }
 
+input UpdateAssignmentInput {
+  hospId: String!
+  itemList: [CreateAssignmentItemInput]
+}
+
 # Define the queries
 type Query {
   getClientByID(input: QueryClientInput): Client
@@ -103,6 +108,7 @@ type Mutation {
   createClient(input: CreateClientInput): Client
   createAcudier(input: CreateAcudierInput): Acudier
   addAssignment(input: CreateAssignmentInput): Assignemnt
+  updateAssignment(input: UpdateAssignmentInput): Assignemnt
 }
 
 # Define the schema

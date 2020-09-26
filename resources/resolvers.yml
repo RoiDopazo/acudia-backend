@@ -33,3 +33,8 @@
   field: getMyAssignments
   request: 'assignments/getMyAssignments-request-template.vtl'
   response: 'common/common-response-template.vtl'
+- dataSource: acudia
+  type: Mutation
+  field: updateAssignment
+  request: 'assignments/updateAssignment-request-template.vtl'
+  response: 'common/common-response-template.vtl'
