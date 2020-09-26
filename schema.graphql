@@ -108,7 +108,7 @@ type Mutation {
   createClient(input: CreateClientInput): Client
   createAcudier(input: CreateAcudierInput): Acudier
   addAssignment(input: CreateAssignmentInput): Assignemnt
-  updateAssignment(input: UpdateAssignmentInput): Assignemnt
+  updateAssignment(input: UpdateAssignmentInput): Boolean
 }
 
 # Define the schema
