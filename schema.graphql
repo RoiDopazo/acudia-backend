@@ -25,6 +25,30 @@ type Acudier {
   deletedAt: Float
 }
 
+type AssignemntItem {
+  from: AWSDate
+  to: AWSDate
+  startHour: Float
+  endHour: Float
+  fare: Float
+  days: [Boolean]
+}
+
+type Assignemnt {
+  PK: String!
+  SK: String!
+  hospId: String!
+  hospName: String
+  hospProvince: String
+  itemList: [AssignemntItem]
+  createdAt: Float
+  updatedAt: Float
+}
+
+type AssignemntList {
+  items: [Assignemnt]
+}
+
 # Inputs
 input CreateClientInput {
   name: String!
@@ -42,6 +66,23 @@ input CreateAcudierInput {
   photoUrl: String
 }
 
+input CreateAssignmentItemInput {
+  from: AWSDate
+  to: AWSDate
+  startHour: Float
+  endHour: Float
+  fare: Float
+  days: [Boolean]
+}
+
+input CreateAssignmentInput {
+  hospId: String!
+  email: String
+  hospName: String
+  hospProvince: String
+  itemList: [CreateAssignmentItemInput]
+}
+
 input QueryClientInput {
   id: String!
 }
@@ -54,12 +95,14 @@ input QueryAcudierInput {
 type Query {
   getClientByID(input: QueryClientInput): Client
   getAcudierByID(input: QueryAcudierInput): Acudier
+  getMyAssignments: AssignemntList
 }
 
 # Define the mutations
 type Mutation {
   createClient(input: CreateClientInput): Client
   createAcudier(input: CreateAcudierInput): Acudier
+  addAssignment(input: CreateAssignmentInput): Assignemnt
 }
 
 # Define the schema

@@ -1,12 +1,5 @@
 $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
 
-## Validate genre
-
-#set($validGenre = $util.matches("^(MALE|FEMALE|OTHER)$", $ctx.args.input.genre))
-#if (!$validGenre)
-    $util.error("$ctx.args.input.genre is not a valid genre [MALE | FEMALE | OTHER]", "ValidationError")
-#end
-
 ## FIXME: identity is only available when using aws dynamodb (not in local env)
 #if ($ctx.identity.username)
   #set($ID = $ctx.identity.username)
@@ -15,7 +8,7 @@ $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds()))
 #end
 
 #set($PK = "ACUDIER#$ID")
-#set($SK = "PROFILE")
+#set($SK = "HOSP#$ctx.args.input.hospId")
 
 {
   "version" : "2017-02-28",
@@ -30,14 +23,18 @@ $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds()))
   },
   "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input),
   "condition": {
-    "expression": "NOT contains(#PK, :value)",
+    "expression": "NOT (#PK = :pk) And NOT (#SK = :sk)",
     "expressionValues": {
-      ":value": {
-        "S": "$ID"
+      ":pk": {
+        "S": "$PK"
+      },
+      ":sk": {
+        "S": "$SK"
       }
     },
     "expressionNames": {
-      "#PK": "PK"
+      "#PK": "PK",
+      "#SK": "SK"
     }
   }
 }

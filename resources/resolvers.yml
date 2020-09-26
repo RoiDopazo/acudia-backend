@@ -1,21 +1,35 @@
+# Clients
 - dataSource: acudia
   type: Mutation
   field: createClient
   request: 'clients/createClient-request-template.vtl'
   response: 'common/common-response-template.vtl'
 - dataSource: acudia
-  type: Mutation
-  field: createAcudier
-  request: 'acudiers/createAcudier-request-template.vtl'
-  response: 'common/common-response-template.vtl'
-
-- dataSource: acudia
   type: Query
   field: getClientByID
   request: 'clients/getClientByID-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+# Acudiers
+- dataSource: acudia
+  type: Mutation
+  field: createAcudier
+  request: 'acudiers/createAcudier-request-template.vtl'
   response: 'common/common-response-template.vtl'
 - dataSource: acudia
   type: Query
   field: getAcudierByID
   request: 'acudiers/getAcudierByID-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+#Assignments
+- dataSource: acudia
+  type: Mutation
+  field: addAssignment
+  request: 'assignments/addAssignment-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+- dataSource: acudia
+  type: Query
+  field: getMyAssignments
+  request: 'assignments/getMyAssignments-request-template.vtl'
   response: 'common/common-response-template.vtl'
