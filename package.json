@@ -5,7 +5,7 @@
   "main": "handler.js",
   "scripts": {
     "start": "serverless offline start --stage local",
-    "start:local": "nodemon --watch schema.graphql --watch 'resources/**/*' --watch 'mapping-templates/**/*' -e vtl,yml  --exec npm run start",
+    "start:local": "nodemon --watch schema.graphql --watch 'resources/**/*' --watch 'mapping-templates/**/*' --watch 'lambdas/**' -e vtl,yml,js  --exec npm run start",
     "start:dev": "serverless offline start",
     "start:dynamo:dev": "serverless dynamodb install && serverless dynamodb start",
     "hosp:data:toJson": "convert-excel-to-json --sourceFile='.local/CNH_2020.xlsx' > .local/CNH.json",

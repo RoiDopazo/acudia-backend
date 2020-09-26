@@ -23,11 +23,11 @@
   response: 'common/common-response-template.vtl'
 
 #Assignments
-- dataSource: acudia
-  type: Mutation
-  field: addAssignment
-  request: 'assignments/addAssignment-request-template.vtl'
-  response: 'common/common-response-template.vtl'
+# - dataSource: acudia
+#   type: Mutation
+#   field: addAssignment
+#   request: 'assignments/addAssignment-request-template.vtl'
+#   response: 'common/common-response-template.vtl'
 - dataSource: acudia
   type: Query
   field: getMyAssignments
@@ -37,4 +37,10 @@
   type: Mutation
   field: updateAssignment
   request: 'assignments/updateAssignment-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+- dataSource: addAssignment
+  type: Mutation
+  field: addAssignment
+  request: 'common/common-lambda-request-template.vtl'
   response: 'common/common-response-template.vtl'
