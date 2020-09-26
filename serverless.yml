@@ -54,19 +54,17 @@ custom:
         endpoint: ${env:DB_HOST}
         region: localhost
 
-# Function to integrate hosp data (Unccomment if you want to store it in the db)
+layers:
+  vendor:
+    path: lambdas/layers/vendor
+    description: Third party libraries.
+    compatibleRuntimes:
+      - '${self:provider.runtime}'
+    allowedAccounts:
+      - '*'
 
-# functions:
-#   hospIntegration:
-#     handler: lambdas/hosp-data-integration.job
-#     description: Function to parse hospital data and store in the db
-#     iamRoleStatements:
-#       - Effect: 'Allow'
-#         Action: dynamodb:BatchWriteItem
-#         Resource: arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/Hospitals
-#       - Effect: 'Allow'
-#         Action: s3:getObject
-#         Resource: arn:aws:s3:::acudia-dev-data-bucket/*
+functions:
+  - ${file(resources/lambda-functions.yml)}
 
 resources:
   - ${file(resources/dynamodb-tables.yml)}

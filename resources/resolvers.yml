@@ -38,3 +38,9 @@
   field: updateAssignment
   request: 'assignments/updateAssignment-request-template.vtl'
   response: 'common/common-response-template.vtl'
+
+- dataSource: deleteAssignment
+  type: Mutation
+  field: deleteAssignment
+  request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'

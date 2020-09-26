@@ -2,54 +2,69 @@
 #if ($ctx.identity.username)
   #set($ID = $ctx.identity.username)
 #else
-  #set($ID = "")
+  #set($ID = "roidopazo@gmail.com")
 #end
 
 #set($PK = "ACUDIER#$ID")
 #set($SK = "HOSP#$ctx.args.input.hospId")
 
 
-{
-  "version": "2018-05-29",
-  "operation": "UpdateItem",
-  "key": {
-    "PK": {
-      "S": "$PK"
-    },
-    "SK": {
-      "S": "$SK"
-    }
-  },
-  "update": {
-    "expression" : "SET #itemList = :value",
-    "expressionValues": {
-      ":value" : {
-        "L": [
-          #foreach($elem in $ctx.args.input.itemList) {
-            "M": {
-              "from": {
-                "S": "$elem.from"
-              },
-              "to": {
-                "S": "$elem.to"
-              },
-              "startHour": {
-                "N": "$elem.startHour"
-              },
-              "endHour": {
-                "N": "$elem.endHour"
-              },
-              "fare": {
-                "N": "$elem.fare"
-              }
-            }
-          }#if($foreach.hasNext),#end
-          #end
-        ]
+#if($ctx.args.input.itemList.isEmpty()) 
+  {
+    "version": "2018-05-29",
+    "operation": "DeleteItem",
+    "key": {
+      "PK": {
+        "S": "$PK"
+      },
+      "SK": {
+        "S": "$SK"
       }
     },
-    "expressionNames": {
-      "#itemList" : "itemList"
-    }
-  },
-}
+  }
+#else
+  {
+    "version": "2018-05-29",
+    "operation": "UpdateItem",
+    "key": {
+      "PK": {
+        "S": "$PK"
+      },
+      "SK": {
+        "S": "$SK"
+      }
+    },
+    "update": {
+      "expression" : "SET #itemList = :value",
+      "expressionValues": {
+        ":value" : {
+          "L": [
+            #foreach($elem in $ctx.args.input.itemList) {
+              "M": {
+                "from": {
+                  "S": "$elem.from"
+                },
+                "to": {
+                  "S": "$elem.to"
+                },
+                "startHour": {
+                  "N": "$elem.startHour"
+                },
+                "endHour": {
+                  "N": "$elem.endHour"
+                },
+                "fare": {
+                  "N": "$elem.fare"
+                }
+              }
+            }#if($foreach.hasNext),#end
+            #end
+          ]
+        }
+      },
+      "expressionNames": {
+        "#itemList" : "itemList"
+      }
+    },
+  }
+#end

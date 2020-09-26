@@ -1,10 +1,8 @@
-$util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
-
 ## FIXME: identity is only available when using aws dynamodb (not in local env)
 #if ($ctx.identity.username)
   #set($ID = $ctx.identity.username)
 #else
-  #set($ID = $ctx.args.input.email)
+  #set($ID = "roidopazo@gmail.com")
 #end
 
 #set($PK = "ACUDIER#$ID")
@@ -22,19 +20,5 @@ $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds()))
     }
   },
   "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input),
-  "condition": {
-    "expression": "NOT (#PK = :pk) And NOT (#SK = :sk)",
-    "expressionValues": {
-      ":pk": {
-        "S": "$PK"
-      },
-      ":sk": {
-        "S": "$SK"
-      }
-    },
-    "expressionNames": {
-      "#PK": "PK",
-      "#SK": "SK"
-    }
-  }
+
 }
