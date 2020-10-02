@@ -35,6 +35,7 @@
     "velocityjs": "^2.0.0"
   },
   "dependencies": {
+    "@middy/core": "^1.4.0",
     "convert-excel-to-json": "^1.7.0",
     "nodemon": "^2.0.4",
     "serverless-appsync-offline": "^1.4.0",

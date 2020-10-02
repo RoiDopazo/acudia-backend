@@ -1,4 +1,4 @@
-# Function to integrate hosp data (Unccomment if you want to store it in the db)
+# Function to integrate hosp data (DEPRECATED)
 hospIntegration:
   handler: lambdas/hosp-data-integration.job
   description: Function to parse hospital data and store in the db
@@ -11,9 +11,9 @@ hospIntegration:
       Resource: arn:aws:s3:::acudia-dev-data-bucket/*
 
 addAssignment:
-  handler: lambdas/assignments/add-assignment/index.handler
+  handler: lambdas/assignments/add-assignment/index.addAssignmentHandler
   package:
     include:
       - '!**'
-      - lambdas/util/**
+      - lambdas/utils/**
       - lambdas/assignments/add-assignment/**
