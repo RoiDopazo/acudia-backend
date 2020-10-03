@@ -16,6 +16,7 @@
     "deploy-dev": "npm run pre-deploy && sls deploy --stage dev",
     "deploy": "serverless deploy --stage dev",
     "remove": "serverless remove --stage dev",
+    "invoke-local": "serverless invoke local --stage local --function",
     "local:postinstall": "rm -rf node_modules/@conduitvc/appsync-emulator-serverless/node_modules/velocityjs"
   },
   "repository": {
