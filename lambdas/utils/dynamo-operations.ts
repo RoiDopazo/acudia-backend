@@ -1,11 +1,13 @@
-const AWS = require('aws-sdk');
-const _ = require('lodash');
+import AWS from 'aws-sdk';
+import _ from 'lodash';
 
 const isLocal = process.env.STAGE === 'local';
+const DEFAULT_LIMIT = 20 as number;
 
 if (isLocal) {
   AWS.config.update({
     region: process.env.REGION,
+    // @ts-ignore
     endpoint: process.env.DB_HOST,
   });
 }
@@ -36,9 +38,10 @@ const find = async (id, tableName) => {
   }
 };
 
-const getWhereIdIn = async (ids, tableName) => {
+const getWhereIdIn = async (ids: string[], tableName: string) => {
   const keys = [];
   for (const id of ids) {
+    // @ts-ignore
     keys.push({ id });
   }
 
@@ -53,6 +56,7 @@ const getWhereIdIn = async (ids, tableName) => {
     console.log({ result });
     console.log('getWhereIdIn:result', result);
 
+    // @ts-ignore
     const items = result.Responses[tableName];
     console.log('getWhereIdIn:items', items);
 
@@ -76,6 +80,7 @@ const list = async ({ tableName, limit, nextToken }) => {
     TableName: tableName,
   };
   if (nextToken) {
+    // @ts-ignore
     params.ExclusiveStartKey = { id: nextToken };
   }
 
@@ -83,8 +88,9 @@ const list = async ({ tableName, limit, nextToken }) => {
   const result = await docClient.scan(params).promise();
   // console.log({result});
 
-  let newNextToken = null;
+  let newNextToken: string | null = null;
   if (_.has(result, 'LastEvaluatedKey')) {
+    // @ts-ignore
     newNextToken = result.LastEvaluatedKey.id;
   }
 
@@ -122,7 +128,7 @@ const query = async ({
 };
 
 const update = async ({ tableName, id, data }) => {
-  const updateExpressions = [];
+  const updateExpressions = [] as string[];
   const expressionsValues = {};
   for (const fieldName of Object.keys(data)) {
     const fieldValue = data[fieldName];
@@ -145,11 +151,4 @@ const update = async ({ tableName, id, data }) => {
   return result;
 };
 
-module.exports = {
-  find,
-  list,
-  query,
-  update,
-  getWhereIdIn,
-  insertOrReplace,
-};
+export default { find, list, query, update, getWhereIdIn, insertOrReplace };

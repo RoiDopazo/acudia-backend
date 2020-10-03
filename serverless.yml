@@ -7,7 +7,11 @@ package:
     - node_modules/**
     - tmp/**
     - .git/**
+  include:
+    - schema.graphql
     - dynamodb_local_data/**
+    - mapping-templates
+    - lambdas/**
 
 provider:
   name: aws
@@ -16,6 +20,7 @@ provider:
   region: ${env:REGION}
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-dotenv-plugin
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
@@ -53,15 +58,6 @@ custom:
       client:
         endpoint: ${env:DB_HOST}
         region: localhost
-
-layers:
-  vendor:
-    path: lambdas/layers/vendor
-    description: Third party libraries.
-    compatibleRuntimes:
-      - '${self:provider.runtime}'
-    allowedAccounts:
-      - '*'
 
 functions:
   - ${file(resources/lambda-functions.yml)}

@@ -1,4 +1,4 @@
-module.exports.buildId = (identity) => {
+export const buildId = (identity) => {
   if (identity.username) {
     return identity.username;
   } else {
