@@ -11,9 +11,4 @@ hospIntegration:
       Resource: arn:aws:s3:::acudia-dev-data-bucket/*
 
 addAssignment:
-  handler: lambdas/assignments/add-assignment/index.addAssignmentHandler
-  package:
-    include:
-      - '!**'
-      - lambdas/utils/**
-      - lambdas/assignments/add-assignment/**
+  handler: dist/lambdas/assignments/add-assignment/index.addAssignmentHandler

@@ -4,14 +4,7 @@ package:
   excludeDevDependencies: true
   individually: true
   exclude:
-    - node_modules/**
-    - tmp/**
-    - .git/**
-  include:
-    - schema.graphql
-    - dynamodb_local_data/**
-    - mapping-templates
-    - lambdas/**
+    - '**/*'
 
 provider:
   name: aws
@@ -20,7 +13,8 @@ provider:
   region: ${env:REGION}
 
 plugins:
-  - serverless-plugin-typescript
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
   - serverless-dotenv-plugin
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
@@ -31,6 +25,9 @@ plugins:
 custom:
   accountId: ${env:AWS_ACCOUNT_ID}
   region: ${env:REGION}
+
+  includeDependencies:
+    enableCaching: true
 
   dynamodb:
     stages:
