@@ -3,22 +3,16 @@ import { Context, Handler } from 'aws-lambda';
 import { authenticationMiddleware } from '../../middlewares/authenticationMiddleware';
 import { ACUDIA_TABLE, PREFIXES } from '../../utils/constants';
 import DynamoDbUtils from '../../utils/dynamo-operations';
-import { buildId } from '../../utils/helpers';
 
 const addAssignment: Handler = async (event, context: Context) => {
-  console.info('[LAMBDA] add-assignment', event);
+  console.info(`[LAMBDA] ${context.functionName}`, event);
 
-  const {
-    arguments: {
-      arguments: { input },
-      identity,
-    },
-  } = event;
+  const { input, identity } = event.custom;
 
   try {
     const assignment = await DynamoDbUtils.find(
       {
-        PK: `${PREFIXES.ACUDIER}${buildId(identity)}`,
+        PK: `${PREFIXES.ACUDIER}${identity}`,
         SK: `${PREFIXES.HOSPITAL}${input.hospId}`,
       },
       ACUDIA_TABLE,
@@ -34,7 +28,7 @@ const addAssignment: Handler = async (event, context: Context) => {
     } else {
       dataToUpdate = {
         ...input,
-        PK: `${PREFIXES.ACUDIER}${buildId(identity)}`,
+        PK: `${PREFIXES.ACUDIER}${identity}`,
         SK: `${PREFIXES.HOSPITAL}${input.hospId}`,
       };
     }

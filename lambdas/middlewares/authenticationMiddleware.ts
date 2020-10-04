@@ -2,11 +2,9 @@ const authenticationMiddleware = (config) => {
   // might set default options in config
   return {
     before: (handler, next) => {
-      if (handler.arguments.identity) {
-        handler.context.identity = handler.arguments.identity;
-      } else {
-        handler.context.identity = 'roidopazo@gmail.com';
-      }
+      handler.event.custom = {};
+      handler.event.custom.identity = handler.event.arguments.identity.username ?? process.env.LOCAL_EMAIL;
+      handler.event.custom.input = handler.event.arguments?.arguments?.input;
       next();
     },
   };

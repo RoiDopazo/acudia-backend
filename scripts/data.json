@@ -1,0 +1,29 @@
+{
+  "arguments": {
+    "arguments": {
+      "input": {
+        "hospId": "1002",
+        "hospName": "Hospital de Santiago",
+        "hospProvince": "A Coruña",
+        "email": "rdopazobucket@gmail.com",
+        "itemList": [
+          {
+            "from": "2021-04-01",
+            "to": "2021-05-05",
+            "startHour": 0,
+            "endHour": 36000
+          }
+        ]
+      }
+    },
+    "identity": {},
+    "source": null,
+    "result": null,
+    "request": {},
+    "info": {},
+    "error": null,
+    "prev": null,
+    "stash": {},
+    "outErrors": []
+  }
+}
