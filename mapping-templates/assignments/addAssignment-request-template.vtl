@@ -1,0 +1,24 @@
+## FIXME: identity is only available when using aws dynamodb (not in local env)
+#if ($ctx.identity.username)
+  #set($ID = $ctx.identity.username)
+#else
+  #set($ID = "")
+#end
+
+#set($PK = "ACUDIER#$ID")
+#set($SK = "HOSP#$ctx.args.input.hospId")
+
+{
+  "version" : "2017-02-28",
+  "operation" : "PutItem",
+  "key": {
+    "PK": {
+      "S": "$PK"
+    },
+    "SK": {
+      "S": "$SK"
+    }
+  },
+  "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input),
+
+}

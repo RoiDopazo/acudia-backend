@@ -4,10 +4,7 @@ package:
   excludeDevDependencies: true
   individually: true
   exclude:
-    - node_modules/**
-    - tmp/**
-    - .git/**
-    - dynamodb_local_data/**
+    - '**/*'
 
 provider:
   name: aws
@@ -16,6 +13,8 @@ provider:
   region: ${env:REGION}
 
 plugins:
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
   - serverless-dotenv-plugin
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
@@ -26,6 +25,9 @@ plugins:
 custom:
   accountId: ${env:AWS_ACCOUNT_ID}
   region: ${env:REGION}
+
+  includeDependencies:
+    enableCaching: true
 
   dynamodb:
     stages:
@@ -55,16 +57,7 @@ custom:
         region: localhost
 
 functions:
-  hospIntegration:
-    handler: lambdas/hosp-data-integration.job
-    description: Function to parse hospital data and store in the db
-    iamRoleStatements:
-      - Effect: 'Allow'
-        Action: dynamodb:BatchWriteItem
-        Resource: arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/Hospitals
-      - Effect: 'Allow'
-        Action: s3:getObject
-        Resource: arn:aws:s3:::acudia-dev-data-bucket/*
+  - ${file(resources/lambda-functions.yml)}
 
 resources:
   - ${file(resources/dynamodb-tables.yml)}

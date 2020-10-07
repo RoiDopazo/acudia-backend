@@ -1,4 +1,3 @@
-## TODO: avoid reset createdAt when updating
 $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
 
 ## Validate genre
@@ -8,7 +7,14 @@ $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds()))
     $util.error("$ctx.args.input.genre is not a valid genre [MALE | FEMALE | OTHER]", "ValidationError")
 #end
 
-#set($PK = "ACUDIER#$ctx.args.input.email")
+## FIXME: identity is only available when using aws dynamodb (not in local env)
+#if ($ctx.identity.username)
+  #set($ID = $ctx.identity.username)
+#else
+  #set($ID = $ctx.args.input.email)
+#end
+
+#set($PK = "ACUDIER#$ID")
 #set($SK = "PROFILE")
 
 {
@@ -27,7 +33,7 @@ $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds()))
     "expression": "NOT contains(#PK, :value)",
     "expressionValues": {
       ":value": {
-        "S": "$ctx.args.input.email"
+        "S": "$ID"
       }
     },
     "expressionNames": {

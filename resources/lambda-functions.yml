@@ -1,0 +1,28 @@
+# Function to integrate hosp data (DEPRECATED)
+# hospIntegration:
+#   handler: lambdas/hosp-data-integration.job
+#   description: Function to parse hospital data and store in the db
+#   iamRoleStatements:
+#     - Effect: 'Allow'
+#       Action: dynamodb:BatchWriteItem
+#       Resource: arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/Hospitals
+#     - Effect: 'Allow'
+#       Action: s3:getObject
+#       Resource: arn:aws:s3:::acudia-dev-data-bucket/*
+
+addAssignment:
+  handler: dist/lambdas/assignments/add-assignment/index.addAssignmentHandler
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+    - Effect: 'Allow'
+      Action: s3:getObject
+      Resource: arn:aws:s3:::acudia-dev-data-bucket/*
+  package:
+    include:
+      - 'dist/lambdas/**'

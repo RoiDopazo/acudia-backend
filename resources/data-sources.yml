@@ -6,7 +6,15 @@
       - Effect: 'Allow'
         Action:
           - 'dynamodb:PutItem'
+          - 'dynamodb:UpdateItem'
+          - 'dynamodb:GetItem'
           - 'dynamodb:Query'
+          - 'dynamodb:RemoveItem'
         Resource:
           - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
           - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+
+- type: AWS_LAMBDA
+  name: 'addAssignment'
+  config:
+    functionName: 'addAssignment'

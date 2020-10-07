@@ -1,17 +1,4 @@
-# Entities
-type Client {
-  PK: String!
-  SK: String!
-  name: String!
-  secondName: String!
-  email: String!
-  photoUrl: String
-  createdAt: Float
-  updatedAt: Float
-  deletedAt: Float
-}
-
-type Acudier {
+type Profile {
   PK: String!
   SK: String!
   name: String
@@ -23,6 +10,30 @@ type Acudier {
   createdAt: Float
   updatedAt: Float
   deletedAt: Float
+}
+
+type AssignemntItem {
+  from: AWSDate
+  to: AWSDate
+  startHour: Float
+  endHour: Float
+  fare: Float
+  days: [Boolean]
+}
+
+type Assignemnt {
+  PK: String!
+  SK: String!
+  hospId: String!
+  hospName: String
+  hospProvince: String
+  itemList: [AssignemntItem]
+  createdAt: Float
+  updatedAt: Float
+}
+
+type AssignemntList {
+  items: [Assignemnt]
 }
 
 # Inputs
@@ -42,6 +53,23 @@ input CreateAcudierInput {
   photoUrl: String
 }
 
+input CreateAssignmentItemInput {
+  from: AWSDate
+  to: AWSDate
+  startHour: Float
+  endHour: Float
+  fare: Float
+  days: [Boolean]
+}
+
+input CreateAssignmentInput {
+  hospId: String!
+  email: String
+  hospName: String
+  hospProvince: String
+  itemList: [CreateAssignmentItemInput]
+}
+
 input QueryClientInput {
   id: String!
 }
@@ -50,16 +78,29 @@ input QueryAcudierInput {
   id: String!
 }
 
+input UpdateAssignmentInput {
+  hospId: String!
+  itemList: [CreateAssignmentItemInput]
+}
+
+input GetProfileInput {
+  role: String!
+}
+
 # Define the queries
 type Query {
-  getClientByID(input: QueryClientInput): Client
-  getAcudierByID(input: QueryAcudierInput): Acudier
+  getProfile(input: GetProfileInput): Profile
+  getClientByID(input: QueryClientInput): Profile
+  getAcudierByID(input: QueryAcudierInput): Profile
+  getMyAssignments: AssignemntList
 }
 
 # Define the mutations
 type Mutation {
-  createClient(input: CreateClientInput): Client
-  createAcudier(input: CreateAcudierInput): Acudier
+  createClient(input: CreateClientInput): Profile
+  createAcudier(input: CreateAcudierInput): Profile
+  addAssignment(input: CreateAssignmentInput): Assignemnt
+  updateAssignment(input: UpdateAssignmentInput): Boolean
 }
 
 # Define the schema
