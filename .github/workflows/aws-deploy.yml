@@ -35,7 +35,7 @@ jobs:
           aws-region: eu-west-1
 
       - run: npm install
-      - run: npm build
+      - run: npm run build
       - run: npm run deploy-dev
         env:
           ACUDIA_TABLE_NAME: ${{ secrets.ACUDIA_TABLE_NAME }}
