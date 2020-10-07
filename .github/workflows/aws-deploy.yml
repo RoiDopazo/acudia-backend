@@ -35,7 +35,7 @@ jobs:
         aws-region: eu-west-1
       
     - run: npm install
-    - run: npm run deploy
+    - run: npm run deploy-dev
       env:
         REGION: eu-west-1
         AWS_USER_POOL_ID: ${{ secrets.AWS_DEV_USER_POOL_ID }}
