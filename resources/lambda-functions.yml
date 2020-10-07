@@ -26,3 +26,5 @@ addAssignment:
   package:
     include:
       - 'dist/lambdas/**'
+  environment:
+    ACUDIA_TABLE_NAME: ${env:ACUDIA_TABLE_NAME}

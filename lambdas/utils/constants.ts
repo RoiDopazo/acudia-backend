@@ -4,4 +4,5 @@ export const PREFIXES = {
   CLIENT: 'CLIENT#',
 };
 
+console.log(process.env);
 export const ACUDIA_TABLE = process.env.ACUDIA_TABLE_NAME as string;
