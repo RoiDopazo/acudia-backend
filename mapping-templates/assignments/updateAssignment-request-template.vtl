@@ -9,7 +9,7 @@
 #set($SK = "HOSP#$ctx.args.input.hospId")
 
 
-#if($ctx.args.input.itemList.isEmpty()) 
+#if(!$ctx.args.input.itemList.size()) 
   {
     "version": "2018-05-29",
     "operation": "DeleteItem",

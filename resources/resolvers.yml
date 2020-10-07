@@ -22,17 +22,19 @@
   request: 'acudiers/getAcudierByID-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
-#Assignments
-# - dataSource: acudia
-#   type: Mutation
-#   field: addAssignment
-#   request: 'assignments/addAssignment-request-template.vtl'
-#   response: 'common/common-response-template.vtl'
+- dataSource: acudia
+  type: Query
+  field: getProfile
+  request: 'profile/profile-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+# Assignments
 - dataSource: acudia
   type: Query
   field: getMyAssignments
   request: 'assignments/getMyAssignments-request-template.vtl'
   response: 'common/common-response-template.vtl'
+
 - dataSource: acudia
   type: Mutation
   field: updateAssignment

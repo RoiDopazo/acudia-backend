@@ -1,17 +1,4 @@
-# Entities
-type Client {
-  PK: String!
-  SK: String!
-  name: String!
-  secondName: String!
-  email: String!
-  photoUrl: String
-  createdAt: Float
-  updatedAt: Float
-  deletedAt: Float
-}
-
-type Acudier {
+type Profile {
   PK: String!
   SK: String!
   name: String
@@ -96,17 +83,22 @@ input UpdateAssignmentInput {
   itemList: [CreateAssignmentItemInput]
 }
 
+input GetProfileInput {
+  role: String!
+}
+
 # Define the queries
 type Query {
-  getClientByID(input: QueryClientInput): Client
-  getAcudierByID(input: QueryAcudierInput): Acudier
+  getProfile(input: GetProfileInput): Profile
+  getClientByID(input: QueryClientInput): Profile
+  getAcudierByID(input: QueryAcudierInput): Profile
   getMyAssignments: AssignemntList
 }
 
 # Define the mutations
 type Mutation {
-  createClient(input: CreateClientInput): Client
-  createAcudier(input: CreateAcudierInput): Acudier
+  createClient(input: CreateClientInput): Profile
+  createAcudier(input: CreateAcudierInput): Profile
   addAssignment(input: CreateAssignmentInput): Assignemnt
   updateAssignment(input: UpdateAssignmentInput): Boolean
 }
