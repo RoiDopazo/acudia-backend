@@ -4,7 +4,7 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "start": "SLS_DEBUG=* NODE_DEBUG=appsync-* ACUDIA_TABLE_NAME=asdasda serverless appsync-offline start --stage local",
+    "start": "SLS_DEBUG=* NODE_DEBUG=appsync-* serverless appsync-offline start --stage local",
     "start:local": "nodemon --watch schema.graphql --watch 'resources/**/*' --watch 'mapping-templates/**/*' --watch 'lambdas/**' -e vtl,yml,js  --exec npm run start",
     "start:dev": "serverless offline start",
     "start:dynamo": "serverless dynamodb start --stage local",

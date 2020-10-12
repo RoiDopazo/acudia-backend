@@ -1,6 +1,13 @@
 $util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
 
-#set($PK = "CLIENT#$ctx.args.input.email")
+## FIXME: identity is only available when using aws dynamodb (not in local env)
+#if ($ctx.identity.username)
+  #set($ID = $ctx.identity.username)
+#else
+  #set($ID = $ctx.args.input.email)
+#end
+
+#set($PK = "CLIENT#$ID")
 #set($SK = "PROFILE")
 
 {
