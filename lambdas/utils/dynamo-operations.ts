@@ -24,10 +24,13 @@ const insertOrReplace = async (item, tableName) => {
   return item;
 };
 
-const find = async (id, tableName) => {
+const find = async (id, tableName, gsi = false) => {
+  const invertedIndex = gsi ? { IndexName: 'InvertedIndex' } : {};
+
   const params = {
     Key: id,
     TableName: tableName,
+    ...invertedIndex,
   };
 
   const result = await docClient.get(params).promise();
@@ -104,12 +107,8 @@ const query = async ({
   tableName,
   indexName,
   hashIndexOpts,
-  rangeIndexOpts = {},
-}) => {
-  // rangeIndexOpts is not implemented yet.
-  console.log({ hashIndexOpts });
+}): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> => {
   const { attrName, attrValue, operator } = hashIndexOpts;
-  console.log({ attrName, attrValue, operator });
 
   const params = {
     TableName: tableName,
@@ -119,12 +118,12 @@ const query = async ({
       ':hkey': attrValue,
     },
   };
-  console.log({ params });
 
-  const result = await docClient.query(params).promise();
-  console.log({ result });
+  const result: AWS.DynamoDB.DocumentClient.QueryOutput = await docClient
+    .query(params)
+    .promise();
 
-  return result.Items;
+  return result;
 };
 
 const update = async ({ tableName, id, data }) => {

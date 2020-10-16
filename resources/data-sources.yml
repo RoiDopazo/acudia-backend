@@ -18,3 +18,8 @@
   name: 'addAssignment'
   config:
     functionName: 'addAssignment'
+
+- type: AWS_LAMBDA
+  name: 'searchAssignments'
+  config:
+    functionName: 'searchAssignments'

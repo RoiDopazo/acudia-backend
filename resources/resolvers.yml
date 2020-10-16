@@ -46,3 +46,9 @@
   field: addAssignment
   request: 'common/common-lambda-request-template.vtl'
   response: 'common/common-response-template.vtl'
+
+- dataSource: searchAssignments
+  type: Query
+  field: searchAssignments
+  request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'

@@ -1,8 +1,8 @@
 import middy from '@middy/core';
 import { Context, Handler } from 'aws-lambda';
-import { authenticationMiddleware } from '../../middlewares/authenticationMiddleware';
-import { ACUDIA_TABLE, PREFIXES } from '../../utils/constants';
-import DynamoDbUtils from '../../utils/dynamo-operations';
+import { authenticationMiddleware } from '../middlewares/authenticationMiddleware';
+import { ACUDIA_TABLE, PREFIXES } from '../utils/constants';
+import DynamoDbUtils from '../utils/dynamo-operations';
 
 const addAssignment: Handler = async (event, context: Context) => {
   console.info(`[LAMBDA] ${context.functionName}`, event);

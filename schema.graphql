@@ -87,12 +87,21 @@ input GetProfileInput {
   role: String!
 }
 
+input SearchAssignmentsInput {
+  hospId: String!
+}
+
+type SearchAssignmentResponse {
+  acudier: Profile
+}
+
 # Define the queries
 type Query {
   getProfile(input: GetProfileInput): Profile
   getClientByID(input: QueryClientInput): Profile
   getAcudierByID(input: QueryAcudierInput): Profile
   getMyAssignments: AssignemntList
+  searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponse
 }
 
 # Define the mutations
