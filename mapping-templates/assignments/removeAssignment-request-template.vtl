@@ -6,14 +6,11 @@
 #end
 
 #set($PK = "HOSP#$ctx.args.input.hospId")
-#set($SK = "ITEM#$util.autoId()")
-
-#set($ctx.args.input.data.acudierId = $ID)
-#set($ctx.args.input.data.hospId = $ctx.args.input.hospId)
+#set($SK = "ITEM#$ctx.args.input.assignmentId")
 
 {
-  "version" : "2017-02-28",
-  "operation" : "PutItem",
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
   "key": {
     "PK": {
       "S": "$PK"
@@ -22,5 +19,15 @@
       "S": "$SK"
     }
   },
-  "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input.data),
+  "condition": {
+    "expression": "#acudier = :ID",
+    "expressionValues": {
+      ":ID" : {
+        "S": "$ID"
+      }
+    },
+    "expressionNames": {
+      "#acudier": "acudierId"
+    }
+  }
 }

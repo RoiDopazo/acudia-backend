@@ -5,66 +5,96 @@
   #set($ID = "")
 #end
 
-#set($PK = "ACUDIER#$ID")
-#set($SK = "HOSP#$ctx.args.input.hospId")
+#set($PK = "HOSP#$ctx.args.input.hospId")
+#set($SK = "ITEM#$ctx.args.input.assignmentId")
 
 
-#if(!$ctx.args.input.itemList.size()) 
-  {
-    "version": "2018-05-29",
-    "operation": "DeleteItem",
-    "key": {
-      "PK": {
-        "S": "$PK"
-      },
-      "SK": {
-        "S": "$SK"
-      }
-    },
-  }
-#else
-  {
-    "version": "2018-05-29",
-    "operation": "UpdateItem",
-    "key": {
-      "PK": {
-        "S": "$PK"
-      },
-      "SK": {
-        "S": "$SK"
-      }
-    },
-    "update": {
-      "expression" : "SET #itemList = :value",
-      "expressionValues": {
-        ":value" : {
-          "L": [
-            #foreach($elem in $ctx.args.input.itemList) {
-              "M": {
-                "from": {
-                  "S": "$elem.from"
-                },
-                "to": {
-                  "S": "$elem.to"
-                },
-                "startHour": {
-                  "N": "$elem.startHour"
-                },
-                "endHour": {
-                  "N": "$elem.endHour"
-                },
-                "fare": {
-                  "N": "$elem.fare"
-                }
-              }
-            }#if($foreach.hasNext),#end
+#set( $expNames  = {} )
+#set( $expValues = {} )
+#set( $expSet = {} )
+#set( $expRemove = [] )
+
+## Iterate through each argument, skipping "id" and "expectedVersion" **
+    #foreach( $entry in $ctx.args.input.data.entrySet() )
+        #if( $entry.key != "id" && $entry.key != "expectedVersion" )
+            #if( (!$entry.value) && ("$!{entry.value}" == "") )
+                ## If the argument is set to "null", then remove that attribute from the item in DynamoDB **
+
+                #set( $discard = ${expRemove.add("#${entry.key}")} )
+                $!{expNames.put("#${entry.key}", "$entry.key")}
+            #else
+                ## Otherwise set (or update) the attribute on the item in DynamoDB **
+
+                $util.quiet($expSet.put("#${entry.key}", ":${entry.key}"))
+                $util.quiet($expNames.put("#${entry.key}", "$entry.key"))
+
+                $util.quiet($expValues.put(":${entry.key}", { "S" : "${entry.value}" }))
             #end
-          ]
-        }
+        #end
+    #end
+
+    ## Start building the update expression, starting with attributes we're going to SET **
+    #set( $expression = "" )
+    #if( !${expSet.isEmpty()} )
+        #set( $expression = "SET" )
+        #foreach( $entry in $expSet.entrySet() )
+            #set( $expression = "${expression} ${entry.key} = ${entry.value}" )
+            #if ( $foreach.hasNext )
+                #set( $expression = "${expression}," )
+            #end
+        #end
+    #end
+
+    ## Continue building the update expression, adding attributes we're going to REMOVE **
+    #if( !${expRemove.isEmpty()} )
+        #set( $expression = "${expression} REMOVE" )
+
+        #foreach( $entry in $expRemove )
+            #set( $expression = "${expression} ${entry}" )
+            #if ( $foreach.hasNext )
+                #set( $expression = "${expression}," )
+            #end
+        #end
+    #end
+
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "PK": {
+      "S": "$PK"
+    },
+    "SK": {
+      "S": "$SK"
+    }
+  },
+  "update" : {
+    "expression" : "${expression}"
+    #if( !${expNames.isEmpty()} )
+        ,"expressionNames" : $utils.toJson($expNames)
+    #end
+    #if( !${expValues.isEmpty()} )
+        ,"expressionValues" : $utils.toJson($expValues)
+    #end
+  },
+  "condition": {
+    "expression": "#PK = :valuePK AND #SK = :valueSK AND #acudier = :ID",
+    "expressionValues": {
+      ":valuePK": {
+        "S": "$PK"
       },
-      "expressionNames": {
-        "#itemList" : "itemList"
+       ":valueSK": {
+        "S": "$SK"
+      },
+      ":ID" : {
+        "S": "$ID"
       }
     },
+    "expressionNames": {
+      "#PK": "PK",
+      "#SK": "SK",
+      "#acudier": "acudierId"
+    }
   }
-#end
+}
