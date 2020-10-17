@@ -4,6 +4,7 @@
   field: createClient
   request: 'clients/createClient-request-template.vtl'
   response: 'common/common-response-template.vtl'
+
 - dataSource: acudia
   type: Query
   field: getClientByID
@@ -16,6 +17,7 @@
   field: createAcudier
   request: 'acudiers/createAcudier-request-template.vtl'
   response: 'common/common-response-template.vtl'
+
 - dataSource: acudia
   type: Query
   field: getAcudierByID
@@ -29,22 +31,28 @@
   response: 'common/common-response-template.vtl'
 
 # Assignments
-- dataSource: acudia
+- dataSource: assignments
   type: Query
   field: getMyAssignments
   request: 'assignments/getMyAssignments-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
-- dataSource: acudia
+- dataSource: assignments
   type: Mutation
   field: updateAssignment
   request: 'assignments/updateAssignment-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
-- dataSource: addAssignment
+- dataSource: assignments
   type: Mutation
   field: addAssignment
-  request: 'common/common-lambda-request-template.vtl'
+  request: 'assignments/addAssignment-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+- dataSource: assignments
+  type: Mutation
+  field: removeAssignment
+  request: 'assignments/removeAssignment-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
 - dataSource: searchAssignments

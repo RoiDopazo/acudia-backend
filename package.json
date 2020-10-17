@@ -49,6 +49,7 @@
   "dependencies": {
     "@middy/core": "^1.4.0",
     "@types/aws-lambda": "^8.10.63",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "uuid": "^8.3.1"
   }
 }

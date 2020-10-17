@@ -10,22 +10,6 @@
 #       Action: s3:getObject
 #       Resource: arn:aws:s3:::acudia-dev-data-bucket/*
 
-addAssignment:
-  handler: dist/lambdas/assignments/addAssignment.addAssignmentHandler
-  iamRoleStatements:
-    - Effect: 'Allow'
-      Action:
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-      Resource:
-        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
-        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
-  package:
-    include:
-      - 'dist/lambdas/**'
-  environment:
-    ACUDIA_TABLE_NAME: ${env:ACUDIA_TABLE_NAME}
-
 searchAssignments:
   handler: dist/lambdas/assignments/searchAssignments.searchAssignmentHandler
   iamRoleStatements:

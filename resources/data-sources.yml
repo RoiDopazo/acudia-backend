@@ -14,6 +14,22 @@
           - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
           - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
 
+- type: AMAZON_DYNAMODB
+  name: assignments # name of the resource
+  config:
+    tableName: AssignmentsTable # name of our DynamoDB table
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - 'dynamodb:PutItem'
+          - 'dynamodb:UpdateItem'
+          - 'dynamodb:GetItem'
+          - 'dynamodb:Query'
+          - 'dynamodb:RemoveItem'
+        Resource:
+          - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable'
+          - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable/*'
+
 - type: AWS_LAMBDA
   name: 'addAssignment'
   config:
