@@ -12,28 +12,21 @@ type Profile {
   deletedAt: Float
 }
 
-type AssignemntItem {
+type Assignment {
+  PK: String!
+  SK: String!
+  acudierId: String!
+  hospId: String!
+  hospName: String
+  hospProvince: String
   from: AWSDate
   to: AWSDate
   startHour: Float
   endHour: Float
   fare: Float
   days: [Boolean]
-}
-
-type Assignemnt {
-  PK: String!
-  SK: String!
-  hospId: String!
-  hospName: String
-  hospProvince: String
-  itemList: [AssignemntItem]
   createdAt: Float
   updatedAt: Float
-}
-
-type AssignemntList {
-  items: [Assignemnt]
 }
 
 # Inputs
@@ -53,7 +46,9 @@ input CreateAcudierInput {
   photoUrl: String
 }
 
-input CreateAssignmentItemInput {
+input AssignmentInput {
+  hospName: String
+  hospProvince: String
   from: AWSDate
   to: AWSDate
   startHour: Float
@@ -64,10 +59,18 @@ input CreateAssignmentItemInput {
 
 input CreateAssignmentInput {
   hospId: String!
-  email: String
-  hospName: String
-  hospProvince: String
-  itemList: [CreateAssignmentItemInput]
+  data: AssignmentInput
+}
+
+input UpdateAssignmentInput {
+  hospId: String!
+  assignmentId: String!
+  data: AssignmentInput
+}
+
+input RemoveAssignmentInput {
+  hospId: String!
+  assignmentId: String!
 }
 
 input QueryClientInput {
@@ -78,13 +81,13 @@ input QueryAcudierInput {
   id: String!
 }
 
-input UpdateAssignmentInput {
-  hospId: String!
-  itemList: [CreateAssignmentItemInput]
-}
-
 input GetProfileInput {
   role: String!
+}
+
+#Outputs
+type AssignmentOutput {
+  items: [Assignment]
 }
 
 # Define the queries
@@ -92,15 +95,16 @@ type Query {
   getProfile(input: GetProfileInput): Profile
   getClientByID(input: QueryClientInput): Profile
   getAcudierByID(input: QueryAcudierInput): Profile
-  getMyAssignments: AssignemntList
+  getMyAssignments: AssignmentOutput
 }
 
 # Define the mutations
 type Mutation {
   createClient(input: CreateClientInput): Profile
   createAcudier(input: CreateAcudierInput): Profile
-  addAssignment(input: CreateAssignmentInput): Assignemnt
+  addAssignment(input: CreateAssignmentInput): Assignment
   updateAssignment(input: UpdateAssignmentInput): Boolean
+  removeAssignment(input: RemoveAssignmentInput): Boolean
 }
 
 # Define the schema

@@ -2,6 +2,7 @@ export const PREFIXES = {
   ACUDIER: 'ACUDIER#',
   HOSPITAL: 'HOSP#',
   CLIENT: 'CLIENT#',
+  ITEM: 'ITEM',
 };
 
 console.log(process.env);

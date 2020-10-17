@@ -5,26 +5,19 @@
   #set($ID = "")
 #end
 
-#set($PK = "ACUDIER#$ID")
-#set($SK = "HOSP")
-
-
 {
   "version" : "2017-02-28",
   "operation" : "Query",
+  "index" : "AcudierIndex",
   "query" : {
-    "expression": "(#PK = :pk) AND begins_with(#SK, :sk)",
+    "expression": "(#PK = :pk)",
     "expressionValues": {
       ":pk": {
-        "S": "$PK"
-      },
-      ":sk": {
-        "S": "$SK"
+        "S": "$ID"
       }
     },
     "expressionNames": {
-      "#PK": "PK",
-      "#SK": "SK"
+      "#PK": "acudierId"
     }
   }
 }

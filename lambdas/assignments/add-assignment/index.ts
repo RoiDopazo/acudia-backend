@@ -1,5 +1,6 @@
 import middy from '@middy/core';
 import { Context, Handler } from 'aws-lambda';
+import uuid from 'uuid';
 import { authenticationMiddleware } from '../../middlewares/authenticationMiddleware';
 import { ACUDIA_TABLE, PREFIXES } from '../../utils/constants';
 import DynamoDbUtils from '../../utils/dynamo-operations';
@@ -12,8 +13,8 @@ const addAssignment: Handler = async (event, context: Context) => {
   try {
     const assignment = await DynamoDbUtils.find(
       {
-        PK: `${PREFIXES.ACUDIER}${identity}`,
-        SK: `${PREFIXES.HOSPITAL}${input.hospId}`,
+        PK: `${PREFIXES.HOSPITAL}${input.hospId}`,
+        SK: `${PREFIXES.ITEM}${uuid()}`,
       },
       ACUDIA_TABLE,
     );
