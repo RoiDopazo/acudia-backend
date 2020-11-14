@@ -3,7 +3,18 @@ export const PREFIXES = {
   HOSPITAL: 'HOSP#',
   CLIENT: 'CLIENT#',
   ITEM: 'ITEM',
+  PROFILE: 'PROFILE',
 };
 
-console.log(process.env);
-export const ACUDIA_TABLE = process.env.ACUDIA_TABLE_NAME as string;
+export const TABLE_NAMES = {
+  ACUDIA_TABLE: 'AcudiaTable',
+  ASSIGNMENTS_TABLE: 'AssignmentsTable',
+};
+
+export const INDEXES = {
+  INVERTED_INDEX: 'InvertedIndex',
+  ACUDIER_INDEX: 'AcudierIndex',
+};
+
+export const MIN_FARE = 4;
+export const MAX_FARE = 100;

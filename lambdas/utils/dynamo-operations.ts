@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk';
 import _ from 'lodash';
+import { ScanOutput } from '../@types';
+import DynamoDbUtils from './dynamo-utils';
 
 const isLocal = process.env.STAGE === 'local';
 const DEFAULT_LIMIT = 20 as number;
@@ -73,23 +75,29 @@ const getWhereIdIn = async (ids: string[], tableName: string) => {
   }
 };
 
-const list = async ({ tableName, limit, nextToken }) => {
-  if (!limit) {
-    limit = DEFAULT_LIMIT;
-  }
+const list = async ({ tableName, limit, nextToken, filterJoinCondition, filters }): Promise<ScanOutput> => {
+  const { filterExpresion, filterExpressionAttrValues, filterExpressionAttrNames } = DynamoDbUtils.buildFilters({
+    filters,
+    joinCondition: filterJoinCondition,
+  });
 
   const params = {
     Limit: limit,
     TableName: tableName,
+    FilterExpression: filterExpresion,
+    ExpressionAttributeValues: {
+      ...filterExpressionAttrValues,
+    },
+    ExpressionAttributeNames: {
+      ...filterExpressionAttrNames,
+    },
   };
   if (nextToken) {
     // @ts-ignore
     params.ExclusiveStartKey = { id: nextToken };
   }
 
-  // console.log({params});
   const result = await docClient.scan(params).promise();
-  // console.log({result});
 
   let newNextToken: string | null = null;
   if (_.has(result, 'LastEvaluatedKey')) {
@@ -99,7 +107,7 @@ const list = async ({ tableName, limit, nextToken }) => {
 
   return {
     nextToken: newNextToken,
-    items: result.Items,
+    result,
   };
 };
 
@@ -107,21 +115,29 @@ const query = async ({
   tableName,
   indexName,
   hashIndexOpts,
+  filters,
 }): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> => {
   const { attrName, attrValue, operator } = hashIndexOpts;
+
+  const { filterExpresion, filterExpressionAttrValues, filterExpressionAttrNames } = DynamoDbUtils.buildFilters({
+    filters,
+  });
 
   const params = {
     TableName: tableName,
     IndexName: indexName,
     KeyConditionExpression: `${attrName} ${operator} :hkey`,
+    FilterExpression: filterExpresion,
     ExpressionAttributeValues: {
       ':hkey': attrValue,
+      ...filterExpressionAttrValues,
+    },
+    ExpressionAttributeNames: {
+      ...filterExpressionAttrNames,
     },
   };
 
-  const result: AWS.DynamoDB.DocumentClient.QueryOutput = await docClient
-    .query(params)
-    .promise();
+  const result: AWS.DynamoDB.DocumentClient.QueryOutput = await docClient.query(params).promise();
 
   return result;
 };

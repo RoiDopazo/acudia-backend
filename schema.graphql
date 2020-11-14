@@ -89,13 +89,18 @@ input SearchAssignmentsInput {
   hospId: String!
 }
 
-type SearchAssignmentResponse {
-  acudier: Profile
+#Outputs
+type AssignmentListResponse {
+  items: [Assignment]
 }
 
-#Outputs
-type AssignmentOutput {
-  items: [Assignment]
+type SearchAssignmentResponseList {
+  items: [SearchAssignmentResponse]
+}
+
+type SearchAssignmentResponse {
+  acudier: Profile
+  assignment: Assignment
 }
 
 # Define the queries
@@ -103,8 +108,8 @@ type Query {
   getProfile(input: GetProfileInput): Profile
   getClientByID(input: QueryClientInput): Profile
   getAcudierByID(input: QueryAcudierInput): Profile
-  searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponse
-  getMyAssignments: AssignmentOutput
+  searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponseList
+  getMyAssignments: AssignmentListResponse
 }
 
 # Define the mutations
