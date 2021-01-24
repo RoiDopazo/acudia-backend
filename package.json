@@ -5,10 +5,9 @@
   "main": "handler.js",
   "scripts": {
     "start": "SLS_DEBUG=* NODE_DEBUG=appsync-* serverless appsync-offline start --stage local",
-    "start:local": "nodemon --watch schema.graphql --watch 'resources/**/*' --watch 'mapping-templates/**/*' --watch 'lambdas/**' -e vtl,yml,js  --exec npm run start",
-    "start:dev": "serverless offline start",
+    "start:local": "nodemon --watch schema.graphql --watch 'resources/**/*' --watch 'mapping-templates/**/*' --watch 'lambdas/**' -e vtl,yml,js,ts  --exec 'npm run build && npm run start'",
     "start:dynamo": "serverless dynamodb start --stage local",
-    "build": "./node_modules/typescript/bin/tsc",
+    "build": "./node_modules/typescript/bin/tsc --skipLibCheck",
     "hosp:data:toJson": "convert-excel-to-json --sourceFile='.local/CNH_2020.xlsx' > .local/CNH.json",
     "hosp:data:integration:local": "serverless invoke local --function hospIntegration --stage local",
     "hosp:data:integration:dev": "serverless invoke local --function hospIntegration --stage dev",

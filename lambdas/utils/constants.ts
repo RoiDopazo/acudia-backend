@@ -1,9 +1,21 @@
-export const PREFIXES = {
-  ACUDIER: 'ACUDIER#',
-  HOSPITAL: 'HOSP#',
-  CLIENT: 'CLIENT#',
-  ITEM: 'ITEM',
-};
+export const MIN_FARE = 4;
+export const MAX_FARE = 100;
+export const DEFAULT_LIMIT: number = 20;
 
-console.log(process.env);
-export const ACUDIA_TABLE = process.env.ACUDIA_TABLE_NAME as string;
+export enum TABLE_NAMES {
+  ACUDIA_TABLE = 'AcudiaTable',
+  ASSIGNMENTS_TABLE = 'AssignmentsTable'
+}
+
+export enum INDEXES {
+  INVERTED_INDEX = 'InvertedIndex',
+  ACUDIER_INDEX = 'AcudierIndex'
+}
+
+export enum PREFIXES {
+  ACUDIER = 'ACUDIER#',
+  HOSPITAL = 'HOSP#',
+  CLIENT = 'CLIENT#',
+  ITEM = 'ITEM',
+  PROFILE = 'PROFILE'
+}

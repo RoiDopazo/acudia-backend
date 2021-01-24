@@ -1,14 +1,15 @@
 import AWS from 'aws-sdk';
 import _ from 'lodash';
+import { TABLE_NAMES, INDEXES } from './constants';
+import DynamoDbUtils from './dynamo-utils';
 
 const isLocal = process.env.STAGE === 'local';
-const DEFAULT_LIMIT = 20 as number;
 
 if (isLocal) {
   AWS.config.update({
     region: process.env.REGION,
     // @ts-ignore
-    endpoint: process.env.DB_HOST,
+    endpoint: process.env.DB_HOST
   });
 }
 
@@ -17,17 +18,20 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 const insertOrReplace = async (item, tableName) => {
   const params = {
     TableName: tableName,
-    Item: item,
+    Item: item
   };
 
   await docClient.put(params).promise();
   return item;
 };
 
-const find = async (id, tableName) => {
+const find = async (id, tableName, gsi = false) => {
+  const invertedIndex = gsi ? { IndexName: 'InvertedIndex' } : {};
+
   const params = {
     Key: id,
     TableName: tableName,
+    ...invertedIndex
   };
 
   const result = await docClient.get(params).promise();
@@ -70,23 +74,42 @@ const getWhereIdIn = async (ids: string[], tableName: string) => {
   }
 };
 
-const list = async ({ tableName, limit, nextToken }) => {
-  if (!limit) {
-    limit = DEFAULT_LIMIT;
-  }
+const list = async ({
+  tableName,
+  limit,
+  nextToken,
+  filterJoinCondition,
+  filters
+}: {
+  tableName: TABLE_NAMES;
+  limit?: number;
+  nextToken?: string;
+  filterJoinCondition?: 'AND' | 'OR';
+  filters?: IAttrComp[];
+}): Promise<ScanOutput> => {
+  const { filterExpression, filterExpressionAttrValues, filterExpressionAttrNames } = DynamoDbUtils.buildFilters({
+    filters,
+    joinCondition: filterJoinCondition
+  });
 
-  const params = {
-    Limit: limit,
-    TableName: tableName,
-  };
+  const params = DynamoDbUtils.buildParams({
+    tableName,
+    limit,
+    filterExpression,
+    expressionAttributeValues: {
+      ...filterExpressionAttrValues
+    },
+    expressionAttributeNames: {
+      ...filterExpressionAttrNames
+    }
+  });
+
   if (nextToken) {
     // @ts-ignore
     params.ExclusiveStartKey = { id: nextToken };
   }
 
-  // console.log({params});
   const result = await docClient.scan(params).promise();
-  // console.log({result});
 
   let newNextToken: string | null = null;
   if (_.has(result, 'LastEvaluatedKey')) {
@@ -96,7 +119,7 @@ const list = async ({ tableName, limit, nextToken }) => {
 
   return {
     nextToken: newNextToken,
-    items: result.Items,
+    result
   };
 };
 
@@ -104,27 +127,36 @@ const query = async ({
   tableName,
   indexName,
   hashIndexOpts,
-  rangeIndexOpts = {},
-}) => {
-  // rangeIndexOpts is not implemented yet.
-  console.log({ hashIndexOpts });
+  filters
+}: {
+  tableName: TABLE_NAMES;
+  indexName?: INDEXES;
+  hashIndexOpts: IAttrComp;
+  filters: IAttrComp[];
+}): Promise<AWS.DynamoDB.DocumentClient.QueryOutput> => {
   const { attrName, attrValue, operator } = hashIndexOpts;
-  console.log({ attrName, attrValue, operator });
 
-  const params = {
-    TableName: tableName,
-    IndexName: indexName,
-    KeyConditionExpression: `${attrName} ${operator} :hkey`,
-    ExpressionAttributeValues: {
+  const { filterExpression, filterExpressionAttrValues, filterExpressionAttrNames } = DynamoDbUtils.buildFilters({
+    filters
+  });
+
+  const params = DynamoDbUtils.buildParams({
+    tableName,
+    indexName,
+    keyConditionExpression: `${attrName} ${operator} :hkey`,
+    filterExpression,
+    expressionAttributeValues: {
       ':hkey': attrValue,
+      ...filterExpressionAttrValues
     },
-  };
-  console.log({ params });
+    expressionAttributeNames: {
+      ...filterExpressionAttrNames
+    }
+  });
 
-  const result = await docClient.query(params).promise();
-  console.log({ result });
+  const result: AWS.DynamoDB.DocumentClient.QueryOutput = await docClient.query(params).promise();
 
-  return result.Items;
+  return result;
 };
 
 const update = async ({ tableName, id, data }) => {
@@ -141,7 +173,7 @@ const update = async ({ tableName, id, data }) => {
     TableName: tableName,
     Key: { id },
     UpdateExpression: updateExpression,
-    ExpressionAttributeValues: expressionsValues,
+    ExpressionAttributeValues: expressionsValues
   };
   console.log({ params });
 

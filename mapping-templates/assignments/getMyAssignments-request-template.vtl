@@ -5,6 +5,8 @@
   #set($ID = "")
 #end
 
+#set($now = $util.time.nowFormatted("yyyy-mm-dd"))
+
 {
   "version" : "2017-02-28",
   "operation" : "Query",
@@ -19,5 +21,16 @@
     "expressionNames": {
       "#PK": "acudierId"
     }
+  },
+  "filter": {
+    "expression" : "#to >= :to",
+    "expressionNames" : {
+        "#to" : "to"
+    },
+    "expressionValues" : {
+      ":to": {
+        "S": "$now"
+      }
+    },
   }
 }

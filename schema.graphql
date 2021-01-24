@@ -29,6 +29,16 @@ type Assignment {
   updatedAt: Float
 }
 
+type LastEvaluatedKey {
+  PK: String
+  SK: String
+}
+
+type Pagination {
+  lastEvaluatedKey: LastEvaluatedKey
+  count: Int
+}
+
 # Inputs
 input CreateClientInput {
   name: String!
@@ -85,9 +95,33 @@ input GetProfileInput {
   role: String!
 }
 
+input SearchAssignmentsInputQuery {
+  from: AWSDate
+  to: AWSDate
+  startHour: Float
+  endHour: Float
+  minFare: Float
+  maxFare: Float
+}
+
+input SearchAssignmentsInput {
+  hospId: String!
+  query: SearchAssignmentsInputQuery
+}
+
 #Outputs
-type AssignmentOutput {
+type AssignmentListResponse {
   items: [Assignment]
+}
+
+type SearchAssignmentResponseList {
+  items: [SearchAssignmentResponse]
+  pagination: Pagination
+}
+
+type SearchAssignmentResponse {
+  acudier: Profile
+  assignment: Assignment
 }
 
 # Define the queries
@@ -95,7 +129,8 @@ type Query {
   getProfile(input: GetProfileInput): Profile
   getClientByID(input: QueryClientInput): Profile
   getAcudierByID(input: QueryAcudierInput): Profile
-  getMyAssignments: AssignmentOutput
+  searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponseList
+  getMyAssignments: AssignmentListResponse
 }
 
 # Define the mutations
