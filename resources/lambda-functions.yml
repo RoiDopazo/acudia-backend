@@ -19,8 +19,8 @@ searchAssignments:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource:
-        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
-        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable/*'
   package:
     include:
       - 'dist/lambdas/**'
