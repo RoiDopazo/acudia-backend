@@ -98,6 +98,10 @@ input GetProfileInput {
 input SearchAssignmentsInputQuery {
   from: AWSDate
   to: AWSDate
+  startHour: Float
+  endHour: Float
+  minFare: Float
+  maxFare: Float
 }
 
 input SearchAssignmentsInput {
