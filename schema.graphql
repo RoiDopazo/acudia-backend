@@ -7,8 +7,8 @@ type Profile {
   genre: String
   birthDate: AWSDate
   photoUrl: String
-  jobsCompleted: number
-  popularity: number
+  jobsCompleted: Float
+  popularity: Float
   createdAt: Float
   updatedAt: Float
   deletedAt: Float
