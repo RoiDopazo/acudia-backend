@@ -9,10 +9,8 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
 
   const { input, identity } = event.custom;
 
-  console.log('query ', input.query);
-
   try {
-    const assignments: AWS.DynamoDB.DocumentClient.QueryOutput = await DynamoDbOperations.query({
+    const assignments: QueryOutput<IAssignment> = await DynamoDbOperations.query<IAssignment>({
       tableName: TABLE_NAMES.ASSIGNMENTS_TABLE,
       hashIndexOpts: {
         attrName: 'PK',
@@ -49,9 +47,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       ]
     });
 
-    console.log(assignments.Items);
-
-    const acudiers: ScanOutput = await DynamoDbOperations.list({
+    const acudiers: ScanOutput<IProfile> = await DynamoDbOperations.list<IProfile>({
       tableName: TABLE_NAMES.ACUDIA_TABLE,
       filterJoinCondition: 'OR',
       filters: assignments.Items?.map((assignment) => ({
@@ -62,7 +58,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
     });
 
     const data = assignments.Items?.map((assignment) => {
-      const acudier = acudiers.result.Items?.find(
+      const acudier = acudiers.result.Items.find(
         (acudier) => acudier.PK.includes(assignment.acudierId) && acudier.SK === PREFIXES.PROFILE
       );
       return {

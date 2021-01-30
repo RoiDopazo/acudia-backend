@@ -24,3 +24,16 @@ searchAssignments:
   package:
     include:
       - 'dist/lambdas/**'
+
+testDataIntegration:
+  handler: dist/lambdas/test-data/testDataIntegration.testDataIntegration
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:PutItem
+      Resource:
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable/*'
+  package:
+    include:
+      - 'dist/lambdas/**'
