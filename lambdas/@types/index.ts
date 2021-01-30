@@ -34,6 +34,8 @@ interface IProfile {
   genre: string;
   birthDate?: string;
   photoUrl?: string;
+  jobsCompleted?: number;
+  popularity?: number;
   createdAt: number;
   updatedAt: number;
   deletedAt?: number;

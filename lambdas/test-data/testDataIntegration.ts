@@ -13,10 +13,11 @@ const buildProfiles = ({ acudiers, clients }: { acudiers: number; clients: numbe
 
   for (let i = 0; i < total; i++) {
     const name = NAMES_DATA[random(0, NAMES_DATA.length)];
+    const isAcudier = i < acudiers;
     const isMale = random(0, 1);
 
     const profile: IProfile = {
-      PK: `${i < acudiers ? PREFIXES.ACUDIER : PREFIXES.CLIENT}${todayString}-${i + 1}`,
+      PK: `${isAcudier ? PREFIXES.ACUDIER : PREFIXES.CLIENT}${todayString}-${i + 1}`,
       SK: PREFIXES.PROFILE,
       name: name,
       secondName: random(0, 1) ? NAMES_DATA[random(0, NAMES_DATA.length)] : undefined,
@@ -24,6 +25,8 @@ const buildProfiles = ({ acudiers, clients }: { acudiers: number; clients: numbe
       genre: isMale ? 'MALE' : 'FEMALE',
       birthDate: `01-01-19${random(40, 99)}`,
       photoUrl: `https://randomuser.me/api/portraits/${isMale ? 'men' : 'women'}/${i}.jpg`,
+      jobsCompleted: isAcudier ? random(0, 80) : undefined,
+      popularity: isAcudier ? random(2, 5, true) : undefined,
       createdAt: today.getTime(),
       updatedAt: today.getTime(),
       deletedAt: undefined

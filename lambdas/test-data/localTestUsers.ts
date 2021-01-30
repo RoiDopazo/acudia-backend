@@ -15,6 +15,8 @@ export const addLocalTestUsers = () => {
     genre: 'MALE',
     birthDate: `01-01-19${random(40, 99)}`,
     photoUrl: `https://randomuser.me/api/portraits/men/99.jpg`,
+    jobsCompleted: 143,
+    popularity: 4.2,
     createdAt: today.getTime(),
     updatedAt: today.getTime(),
     deletedAt: undefined
