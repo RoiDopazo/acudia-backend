@@ -2,7 +2,7 @@ import NAMES_DATA from './data/first-names.json';
 import { PREFIXES, TABLE_NAMES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 import { formatTimeString, random } from '../utils/utils';
-import { addLocalTestUsers } from './localTestUsers';
+import { addLocalTestUsers, addLocalTestAssignment } from './localTestUsers';
 
 const today = new Date();
 const todayString = today.toLocaleDateString('en-GB');
@@ -50,7 +50,7 @@ const buildAssignments = ({
     acudiers.map((acudier, index) => {
       const assignment: IAssignment = {
         PK: `${PREFIXES.HOSPITAL}${hospIds}`,
-        SK: `${PREFIXES.ITEM}${index + 1}`,
+        SK: `${PREFIXES.ITEM}${index}`,
         acudierId: acudier.PK,
         hospId: hosp,
         from: `${fromDate}-${formatTimeString(index)}`,
@@ -69,7 +69,7 @@ const buildAssignments = ({
 
 const testDataIntegration = ({
   acudiers = 10,
-  clients = 10,
+  clients = 4,
   addLocalUsers,
   hospIds = [],
   fromDate = '2021-02',
@@ -94,7 +94,10 @@ const testDataIntegration = ({
 
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ASSIGNMENTS_TABLE, data: assignments });
 
-  if (addLocalUsers) addLocalTestUsers();
+  if (addLocalUsers) {
+    addLocalTestUsers();
+    addLocalTestAssignment({ fromDate, toDate });
+  }
 };
 
 export { testDataIntegration };

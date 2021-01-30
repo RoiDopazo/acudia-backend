@@ -1,10 +1,11 @@
 import { PREFIXES, TABLE_NAMES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
-import { random } from '../utils/utils';
+import { formatTimeString, random } from '../utils/utils';
+
+const LOCAL_HOSP_ID = '10040';
+const today = new Date();
 
 export const addLocalTestUsers = () => {
-  const today = new Date();
-
   const profile1: IProfile = {
     PK: `${PREFIXES.ACUDIER}${process.env.LOCAL_EMAIL}`,
     SK: `${PREFIXES.PROFILE}`,
@@ -33,4 +34,24 @@ export const addLocalTestUsers = () => {
   };
 
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: [profile1, profile2] });
+};
+
+export const addLocalTestAssignment = ({ fromDate, toDate }: { fromDate: string; toDate: string }) => {
+  const assignment: IAssignment = {
+    PK: `${PREFIXES.HOSPITAL}${LOCAL_HOSP_ID}`,
+    SK: `${PREFIXES.ITEM}local-1`,
+    acudierId: `${PREFIXES.ACUDIER}${process.env.LOCAL_EMAIL}`,
+    hospId: LOCAL_HOSP_ID,
+    hospName: 'Hospital San José',
+    hospProvince: 'Álava',
+    from: `${fromDate}-${formatTimeString(0)}`,
+    to: `${toDate}-${formatTimeString(0)}`,
+    startHour: random(7, 10) * 3600,
+    endHour: random(19, 23) * 3600,
+    fare: random(6, 15),
+    createdAt: today.getTime(),
+    updatedAt: today.getTime()
+  };
+
+  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ASSIGNMENTS_TABLE, data: [assignment] });
 };
