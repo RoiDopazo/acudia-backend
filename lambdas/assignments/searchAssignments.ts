@@ -21,12 +21,12 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
         {
           attrName: 'from',
           attrValue: input?.query?.from,
-          operator: '>='
+          operator: '<='
         },
         {
           attrName: 'to',
           attrValue: input?.query?.to,
-          operator: '<='
+          operator: '>='
         },
         {
           attrName: 'startHour',

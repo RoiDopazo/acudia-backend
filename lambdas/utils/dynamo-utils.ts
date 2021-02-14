@@ -11,7 +11,7 @@ const buildFilters = ({
   const filterExpressionAttrValues = {};
   const filterExpressionAttrNames = {};
 
-  filters.forEach((filter) => {
+  filters.forEach((filter, index) => {
     if (filter.attrValue) {
       switch (filter.operator) {
         case 'BETWEEN': {
@@ -26,8 +26,8 @@ const buildFilters = ({
         case 'AND':
         default: {
           filterExpressionAttrNames[`#${filter.attrName}`] = filter.attrName;
-          filterExpressionAttrValues[`:${filter.attrName}`] = filter.attrValue;
-          filterExpressionArray.push(`#${filter.attrName} ${filter.operator} :${filter.attrName}`);
+          filterExpressionAttrValues[`:${filter.attrName}${index}`] = filter.attrValue;
+          filterExpressionArray.push(`#${filter.attrName} ${filter.operator} :${filter.attrName}${index}`);
           break;
         }
       }
