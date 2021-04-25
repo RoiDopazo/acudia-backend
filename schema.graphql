@@ -130,8 +130,13 @@ type SearchAssignmentResponseList {
   pagination: Pagination
 }
 
+type SearchAssignmentAcudierResponse {
+  profile: Profile
+  comments: [Comment]
+}
+
 type SearchAssignmentResponse {
-  acudier: Profile
+  acudier: SearchAssignmentAcudierResponse
   assignment: Assignment
 }
 

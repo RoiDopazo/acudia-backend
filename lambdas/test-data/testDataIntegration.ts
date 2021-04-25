@@ -84,7 +84,7 @@ const buildComments = ({ acudiers }: { acudiers: IProfile[] }) => {
         SK: `${PREFIXES.COMMENT}${formattedCreationDate}`,
         author: `${name} ${random(0, 1) ? NAMES_DATA[random(0, NAMES_DATA.length)] : ''}`,
         comment: 'Mocked comment data',
-        date: formattedCreationDate,
+        date: `2020-02-${formatTimeString(random(1, 5))}`,
         rating: random(2, 5, true)
       };
       commentList.push(comment);

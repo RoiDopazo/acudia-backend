@@ -48,7 +48,7 @@ const buildParams = ({
   filterExpression,
   expressionAttributeValues,
   expressionAttributeNames,
-  limit = DEFAULT_LIMIT
+  limit
 }: {
   tableName: TABLE_NAMES;
   indexName?: INDEXES;

@@ -47,7 +47,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       ]
     });
 
-    const acudiers: ScanOutput<IProfile> = await DynamoDbOperations.list<IProfile>({
+    const acudiers: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
       tableName: TABLE_NAMES.ACUDIA_TABLE,
       filterJoinCondition: 'OR',
       filters: assignments.Items?.map((assignment) => ({
@@ -58,12 +58,16 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
     });
 
     const data = assignments.Items?.map((assignment) => {
-      const acudier = acudiers.result.Items.find(
-        (acudier) => acudier.PK.includes(assignment.acudierId) && acudier.SK === PREFIXES.PROFILE
-      );
+      const acudierData = acudiers.result.Items.filter((acudier) => acudier.PK.includes(assignment.acudierId));
+
+      const comments = acudierData.filter((aData) => aData.SK.startsWith(PREFIXES.COMMENT)) ?? [];
+
       return {
         assignment: { ...assignment },
-        acudier: { ...acudier }
+        acudier: {
+          profile: acudierData.find((aData) => aData.SK === PREFIXES.PROFILE),
+          comments: comments
+        }
       };
     });
 
