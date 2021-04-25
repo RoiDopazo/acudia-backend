@@ -57,3 +57,12 @@ interface IAssignment {
   createdAt: number;
   updatedAt: number;
 }
+
+interface IComment {
+  PK: string;
+  SK: string;
+  author: string;
+  comment: string;
+  date: string;
+  rating: number;
+}

@@ -199,6 +199,19 @@ const DynamoDbOperations = {
 
       return await docClient.batchWrite({ RequestItems: { [tableName]: finalData } }).promise();
     }
+  },
+  batchGet: async ({ tableName, ids }: { tableName: TABLE_NAMES; ids: any[] }) => {
+    const results = await docClient
+      .batchGet({
+        RequestItems: {
+          [tableName]: {
+            Keys: ids.map((id) => ({ PK: id }))
+          }
+        }
+      })
+      .promise();
+
+    return results;
   }
 };
 export default DynamoDbOperations;
