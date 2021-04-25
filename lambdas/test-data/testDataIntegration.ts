@@ -70,6 +70,29 @@ const buildAssignments = ({
   return assignmentList;
 };
 
+const buildComments = ({ acudiers }: { acudiers: IProfile[] }) => {
+  const commentList: IComment[] = [];
+
+  acudiers.map((acudier) => {
+    for (let i = 0; i < 5; i++) {
+      const creationDate = Math.round(Date.now() / 10);
+      const formattedCreationDate = `${creationDate}${i}`;
+      const name = NAMES_DATA[random(0, NAMES_DATA.length)];
+
+      const comment: IComment = {
+        PK: `${acudier.PK}`,
+        SK: `${PREFIXES.COMMENT}${formattedCreationDate}`,
+        author: `${name} ${random(0, 1) ? NAMES_DATA[random(0, NAMES_DATA.length)] : ''}`,
+        comment: 'Mocked comment data',
+        date: formattedCreationDate,
+        rating: random(2, 5, true)
+      };
+      commentList.push(comment);
+    }
+  });
+  return commentList;
+};
+
 const testDataIntegration = ({
   acudiers = 10,
   clients = 4,
@@ -86,6 +109,8 @@ const testDataIntegration = ({
   toDate: string;
 }) => {
   const profiles: IProfile[] = buildProfiles({ acudiers, clients });
+
+  // Add profiles
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: profiles });
 
   const assignments: IAssignment[] = buildAssignments({
@@ -95,7 +120,13 @@ const testDataIntegration = ({
     toDate
   });
 
+  // Add assignments
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ASSIGNMENTS_TABLE, data: assignments });
+
+  const comments: IComment[] = buildComments({ acudiers: profiles.slice(0, acudiers / 5) });
+
+  // Add comments
+  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: comments });
 
   if (addLocalUsers) {
     addLocalTestUsers();

@@ -31,6 +31,15 @@ type Assignment {
   updatedAt: Float
 }
 
+type Comment {
+  PK: String!
+  SK: String!
+  author: String!
+  comment: String!
+  date: AWSDate
+  rating: Float!
+}
+
 type LastEvaluatedKey {
   PK: String
   SK: String

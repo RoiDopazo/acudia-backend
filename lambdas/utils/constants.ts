@@ -17,5 +17,6 @@ export enum PREFIXES {
   HOSPITAL = 'HOSP#',
   CLIENT = 'CLIENT#',
   ITEM = 'ITEM#',
-  PROFILE = 'PROFILE'
+  PROFILE = 'PROFILE',
+  COMMENT = 'COMMENT#'
 }
