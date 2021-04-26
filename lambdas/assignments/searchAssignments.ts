@@ -1,7 +1,7 @@
 import middy from '@middy/core';
 import { Context, Handler } from 'aws-lambda';
 import { authenticationMiddleware } from '../middlewares/authenticationMiddleware';
-import { MIN_FARE, MAX_FARE, PREFIXES, TABLE_NAMES } from '../utils/constants';
+import { MIN_FARE, MAX_FARE, PREFIXES, TABLE_NAMES, MAX_NUM_COMMENT_SEARCH_RESPONSE } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 
 const searchAssignment: Handler = async (event, context: Context, callback) => {
@@ -73,7 +73,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
         assignment: acudierAssignments,
         acudier: {
           profile: acudier,
-          comments: comments
+          comments: comments.slice(0, MAX_NUM_COMMENT_SEARCH_RESPONSE)
         }
       });
     });

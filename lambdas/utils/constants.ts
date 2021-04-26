@@ -20,3 +20,5 @@ export enum PREFIXES {
   PROFILE = 'PROFILE',
   COMMENT = 'COMMENT#'
 }
+
+export const MAX_NUM_COMMENT_SEARCH_RESPONSE = 5;
