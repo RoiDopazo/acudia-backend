@@ -37,6 +37,11 @@
     functionName: 'searchAssignments'
 
 - type: AWS_LAMBDA
+  name: 'getAcudierRequests'
+  config:
+    functionName: 'getAcudierRequests'
+
+- type: AWS_LAMBDA
   name: 'testDataIntegration'
   config:
     functionName: 'testDataIntegration'

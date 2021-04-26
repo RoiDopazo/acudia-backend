@@ -52,25 +52,18 @@ const DynamoDbOperations = {
 
     const params = { RequestItems: {} };
     params.RequestItems[tableName] = { Keys: keys };
-    console.log({ params });
-    console.log(params.RequestItems);
-    console.log('Keys: ', params.RequestItems[tableName].Keys);
 
     try {
       const result = await docClient.batchGet(params).promise();
-      console.log({ result });
-      console.log('getWhereIdIn:result', result);
 
       // @ts-ignore
       const items = result.Responses[tableName];
-      console.log('getWhereIdIn:items', items);
 
       if (_.isEmpty(items)) {
         return [];
       }
       return items;
     } catch (err) {
-      console.log('getWhereIdIn:err', err);
       return [];
     }
   },
@@ -128,28 +121,44 @@ const DynamoDbOperations = {
     tableName,
     indexName,
     hashIndexOpts,
+    rangeIndexOpts,
     filters
   }: {
     tableName: TABLE_NAMES;
     indexName?: INDEXES;
     hashIndexOpts: IAttrComp;
+    rangeIndexOpts?: IAttrComp;
     filters: IAttrComp[];
   }): Promise<QueryOutput<T>> => {
     const { attrName, attrValue, operator } = hashIndexOpts;
+    const rangeAttrName = rangeIndexOpts?.attrName;
+    const rangeAttrValue = rangeIndexOpts?.attrValue;
+    const rangeOperator = rangeIndexOpts?.operator;
 
     const { filterExpression, filterExpressionAttrValues, filterExpressionAttrNames } = DynamoDbUtils.buildFilters({
       filters
     });
 
+    const keyConditionExpression = [`${attrName} ${operator} :hkey`];
+
+    const expressionAttributeValues = {
+      ':hkey': attrValue,
+      ...filterExpressionAttrValues
+    };
+
+    if (rangeAttrName) {
+      if (rangeOperator === 'begins_with') {
+        keyConditionExpression.push(`${rangeOperator}(${rangeAttrName}, :rkey) `);
+      }
+      expressionAttributeValues[':rkey'] = rangeAttrValue;
+    }
+
     const params = DynamoDbUtils.buildParams({
       tableName,
       indexName,
-      keyConditionExpression: `${attrName} ${operator} :hkey`,
+      keyConditionExpression: keyConditionExpression.join(' And '),
       filterExpression,
-      expressionAttributeValues: {
-        ':hkey': attrValue,
-        ...filterExpressionAttrValues
-      },
+      expressionAttributeValues: expressionAttributeValues,
       expressionAttributeNames: {
         ...filterExpressionAttrNames
       }
@@ -176,10 +185,8 @@ const DynamoDbOperations = {
       UpdateExpression: updateExpression,
       ExpressionAttributeValues: expressionsValues
     };
-    console.log({ params });
 
     const result = await docClient.update(params).promise();
-    console.log({ result });
 
     return result;
   },
