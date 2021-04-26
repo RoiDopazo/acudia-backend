@@ -105,16 +105,12 @@ const DynamoDbOperations = {
       }
     });
 
-    console.log('params', params);
-
     if (nextToken) {
       // @ts-ignore
       params.ExclusiveStartKey = { id: nextToken };
     }
 
     const result = ((await docClient.scan(params).promise()) as any) as IResult<T>;
-
-    console.log('results', result);
 
     let newNextToken: string | null = null;
     if (_.has(result, 'LastEvaluatedKey')) {

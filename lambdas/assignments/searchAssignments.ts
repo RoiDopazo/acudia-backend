@@ -19,14 +19,14 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       },
       filters: [
         {
-          attrName: 'from',
+          attrName: 'to',
           attrValue: input?.query?.from,
-          operator: '<='
+          operator: '>'
         },
         {
-          attrName: 'to',
+          attrName: 'from',
           attrValue: input?.query?.to,
-          operator: '>='
+          operator: '<'
         },
         {
           attrName: 'startHour',
@@ -47,7 +47,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       ]
     });
 
-    const acudiers: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
+    const acudiersData: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
       tableName: TABLE_NAMES.ACUDIA_TABLE,
       filterJoinCondition: 'OR',
       filters: assignments.Items?.map((assignment) => ({
@@ -57,22 +57,29 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       }))
     });
 
-    const data = assignments.Items?.map((assignment) => {
-      const acudierData = acudiers.result.Items.filter((acudier) => acudier.PK.includes(assignment.acudierId));
+    const acudiers = acudiersData.result.Items.filter((acData) => acData.SK.includes(PREFIXES.PROFILE));
 
-      const comments = acudierData.filter((aData) => aData.SK.startsWith(PREFIXES.COMMENT)) ?? [];
+    const finalData: any[] = [];
 
-      return {
-        assignment: { ...assignment },
+    acudiers.forEach((acudier) => {
+      const acudierAssignments = assignments.Items.filter(
+        (assign) => acudier.PK === `${PREFIXES.ACUDIER}${assign.acudierId}`
+      );
+      const comments =
+        acudiersData.result.Items.filter((aData) => aData.SK.startsWith(PREFIXES.COMMENT) && aData.PK === acudier.PK) ??
+        [];
+
+      finalData.push({
+        assignment: acudierAssignments,
         acudier: {
-          profile: acudierData.find((aData) => aData.SK === PREFIXES.PROFILE),
+          profile: acudier,
           comments: comments
         }
-      };
+      });
     });
 
     const result = {
-      items: data,
+      items: finalData,
       pagination: {
         lastEvaluatedKey: assignments.LastEvaluatedKey,
         count: assignments.Count
