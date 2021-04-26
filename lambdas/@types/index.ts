@@ -1,3 +1,5 @@
+type REQUEST_STATUS = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+
 interface IResult<T> {
   Items: T[];
   Count: number;
@@ -22,7 +24,7 @@ interface IAttrComp {
   attrName: string;
   attrValue: string | number;
   attrValue2?: string | number;
-  operator: '<=' | '<' | '>' | '>=' | 'AND' | 'OR' | '=' | '!=' | 'BETWEEN';
+  operator: '<=' | '<' | '>' | '>=' | 'AND' | 'OR' | '=' | '!=' | 'BETWEEN' | 'begins_with';
 }
 
 interface IProfile {
@@ -65,4 +67,23 @@ interface IComment {
   comment: string;
   date: string;
   rating: number;
+}
+
+interface IRequest {
+  PK: string;
+  SK: string;
+  status: REQUEST_STATUS;
+  acudier: string;
+  acudierName: string;
+  acudierPhoto?: String;
+  client: string;
+  clientName: string;
+  clientPhoto?: String;
+  from: string;
+  to: string;
+  startHour: number;
+  endHour: number;
+  price: number;
+  createdAt: number;
+  updatedAt: number;
 }

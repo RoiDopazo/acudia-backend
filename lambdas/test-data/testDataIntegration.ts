@@ -1,5 +1,5 @@
 import NAMES_DATA from './data/first-names.json';
-import { PREFIXES, TABLE_NAMES } from '../utils/constants';
+import { PREFIXES, REQUEST_STATUS, TABLE_NAMES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 import { formatTimeString, random } from '../utils/utils';
 import { addLocalTestUsers, addLocalTestAssignment } from './localTestUsers';
@@ -33,6 +33,7 @@ const buildProfiles = ({ acudiers, clients }: { acudiers: number; clients: numbe
     };
     profileList.push(profile);
   }
+  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: profileList });
   return profileList;
 };
 
@@ -84,7 +85,7 @@ const buildAssignments = ({
       }
     });
   });
-  return assignmentList;
+  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ASSIGNMENTS_TABLE, data: assignmentList });
 };
 
 const buildComments = ({ acudiers }: { acudiers: IProfile[] }) => {
@@ -107,7 +108,40 @@ const buildComments = ({ acudiers }: { acudiers: IProfile[] }) => {
       commentList.push(comment);
     }
   });
-  return commentList;
+  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: commentList });
+};
+
+const buildRequests = ({ acudier, client }: { acudier: IProfile; client: IProfile }) => {
+  const requestsList: IRequest[] = [];
+
+  [0, 1, 2].forEach((_, index) => {
+    const creationDate = Math.round(Date.now() / 10);
+
+    const fromValues = ['2021-08-12', '2021-09-20', '2021-10-19'];
+    const toValues = ['2021-08-18', '2021-09-23', '2021-10-20'];
+
+    const request: IRequest = {
+      PK: `${acudier.PK}#${client.PK}#${index}`,
+      SK: PREFIXES.REQUEST,
+      status: REQUEST_STATUS.ACCEPTED,
+      acudier: acudier.PK,
+      acudierName: `${acudier.name} ${acudier.secondName ?? ''}`.trim(),
+      acudierPhoto: acudier.photoUrl,
+      client: client.PK,
+      clientName: `${client.name} ${client.secondName ?? ''}`.trim(),
+      clientPhoto: client.photoUrl,
+      from: fromValues[index],
+      to: toValues[index],
+      startHour: random(10, 13) * 3600,
+      endHour: random(16, 19) * 3600,
+      price: random(120, 300),
+      createdAt: parseInt(`${creationDate}0`),
+      updatedAt: parseInt(`${creationDate}0`)
+    };
+
+    requestsList.push(request);
+  });
+  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: requestsList });
 };
 
 const testDataIntegration = ({
@@ -125,25 +159,22 @@ const testDataIntegration = ({
   fromDate: string;
   toDate: string;
 }) => {
+  // Add profiles
   const profiles: IProfile[] = buildProfiles({ acudiers, clients });
 
-  // Add profiles
-  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: profiles });
-
-  const assignments: IAssignment[] = buildAssignments({
+  // Add assignments
+  buildAssignments({
     hospIds,
     acudiers: profiles.slice(0, acudiers),
     fromDate,
     toDate
   });
 
-  // Add assignments
-  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ASSIGNMENTS_TABLE, data: assignments });
-
-  const comments: IComment[] = buildComments({ acudiers: profiles.slice(0, acudiers / 5) });
-
   // Add comments
-  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: comments });
+  buildComments({ acudiers: profiles.slice(0, acudiers / 5) });
+
+  // Add requests
+  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 1] });
 
   if (addLocalUsers) {
     addLocalTestUsers();

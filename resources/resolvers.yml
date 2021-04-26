@@ -60,3 +60,9 @@
   field: searchAssignments
   request: 'common/common-lambda-request-template.vtl'
   response: 'common/common-response-template.vtl'
+
+- dataSource: getAcudierRequests
+  type: Query
+  field: getAcudierRequests
+  request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'

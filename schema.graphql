@@ -40,6 +40,25 @@ type Comment {
   rating: Float!
 }
 
+type Request {
+  PK: String!
+  SK: String!
+  status: String!
+  acudier: String!
+  acudierName: String!
+  acudierPhoto: String
+  client: String!
+  clientName: String!
+  clientPhoto: String
+  from: AWSDate
+  to: AWSDate
+  startHour: Float
+  endHour: Float
+  price: Float
+  createdAt: Float
+  updatedAt: Float
+}
+
 type LastEvaluatedKey {
   PK: String
   SK: String
@@ -140,6 +159,15 @@ type SearchAssignmentResponse {
   assignment: [Assignment]
 }
 
+input QueryAcudierRequestsInput {
+  acudier: String!
+  status: String
+}
+
+type AcudierAvailabilityResponse {
+  items: [Request]
+}
+
 # Define the queries
 type Query {
   getProfile(input: GetProfileInput): Profile
@@ -147,6 +175,7 @@ type Query {
   getAcudierByID(input: QueryAcudierInput): Profile
   searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponseList
   getMyAssignments: AssignmentListResponse
+  getAcudierRequests(input: QueryAcudierRequestsInput): AcudierAvailabilityResponse
 }
 
 # Define the mutations
