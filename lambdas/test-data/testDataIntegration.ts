@@ -48,7 +48,6 @@ const buildAssignments = ({
   toDate: string;
 }) => {
   const assignmentList: IAssignment[] = [];
-
   hospIds.map((hosp) => {
     acudiers.map((acudier, index) => {
       const assignment: IAssignment = {
@@ -65,6 +64,24 @@ const buildAssignments = ({
         updatedAt: today.getTime()
       };
       assignmentList.push(assignment);
+
+      // Add a second assignment
+      if (index < 2) {
+        const assignment: IAssignment = {
+          PK: `${PREFIXES.HOSPITAL}${hospIds}`,
+          SK: `${PREFIXES.ITEM}${index}b`,
+          acudierId: acudier.PK.split('#')[1],
+          hospId: hosp,
+          from: `2021-11-${formatTimeString(index + 1)}`,
+          to: `2021-11-${formatTimeString(21)}`,
+          startHour: random(7, 10) * 3600,
+          endHour: random(19, 23) * 3600,
+          fare: random(6, 15),
+          createdAt: today.getTime(),
+          updatedAt: today.getTime()
+        };
+        assignmentList.push(assignment);
+      }
     });
   });
   return assignmentList;
