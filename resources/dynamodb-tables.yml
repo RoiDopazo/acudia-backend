@@ -8,6 +8,10 @@ Resources:
           AttributeType: S
         - AttributeName: SK
           AttributeType: S
+        - AttributeName: acudier
+          AttributeType: S
+        - AttributeName: client
+          AttributeType: S
       KeySchema:
         - AttributeName: PK
           KeyType: HASH
@@ -22,6 +26,28 @@ Resources:
             - AttributeName: SK
               KeyType: HASH
             - AttributeName: PK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: AcudierIndex
+          KeySchema:
+            - AttributeName: acudier
+              KeyType: HASH
+            - AttributeName: SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: ClientIndex
+          KeySchema:
+            - AttributeName: client
+              KeyType: HASH
+            - AttributeName: SK
               KeyType: RANGE
           Projection:
             ProjectionType: ALL

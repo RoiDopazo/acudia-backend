@@ -111,36 +111,34 @@ const buildComments = ({ acudiers }: { acudiers: IProfile[] }) => {
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: commentList });
 };
 
-const buildRequests = ({ acudier, client }: { acudier: IProfile; client: IProfile }) => {
+const buildRequests = ({ acudier, client, index }: { acudier: IProfile; client: IProfile; index: number }) => {
   const requestsList: IRequest[] = [];
 
-  [0, 1, 2].forEach((_, index) => {
-    const creationDate = Math.round(Date.now() / 10);
+  const creationDate = Math.round(Date.now() / 10);
 
-    const fromValues = ['2021-08-12', '2021-09-20', '2021-10-19'];
-    const toValues = ['2021-08-18', '2021-09-23', '2021-10-20'];
+  const fromValues = ['2021-08-12', '2021-09-20', '2021-10-19'];
+  const toValues = ['2021-08-18', '2021-09-23', '2021-10-20'];
 
-    const request: IRequest = {
-      PK: `${acudier.PK}#${client.PK}#${index}`,
-      SK: PREFIXES.REQUEST,
-      status: REQUEST_STATUS.ACCEPTED,
-      acudier: acudier.PK,
-      acudierName: `${acudier.name} ${acudier.secondName ?? ''}`.trim(),
-      acudierPhoto: acudier.photoUrl,
-      client: client.PK,
-      clientName: `${client.name} ${client.secondName ?? ''}`.trim(),
-      clientPhoto: client.photoUrl,
-      from: fromValues[index],
-      to: toValues[index],
-      startHour: random(10, 13) * 3600,
-      endHour: random(16, 19) * 3600,
-      price: random(120, 300),
-      createdAt: parseInt(`${creationDate}0`),
-      updatedAt: parseInt(`${creationDate}0`)
-    };
+  const request: IRequest = {
+    PK: `${PREFIXES.REQUEST}${index}`,
+    SK: Date.now().toString(),
+    status: REQUEST_STATUS.PENDING,
+    acudier: `${PREFIXES.ACUDIER}${acudier.PK.split('#')[1]}`,
+    acudierName: `${acudier.name} ${acudier.secondName ?? ''}`.trim(),
+    acudierPhoto: acudier.photoUrl,
+    client: `${PREFIXES.CLIENT}${client.PK.split('#')[1]}`,
+    clientName: `${client.name} ${client.secondName ?? ''}`.trim(),
+    clientPhoto: client.photoUrl,
+    from: fromValues[index],
+    to: toValues[index],
+    startHour: random(10, 13) * 3600,
+    endHour: random(16, 19) * 3600,
+    price: random(120, 300),
+    createdAt: parseInt(`${creationDate}0`),
+    updatedAt: parseInt(`${creationDate}0`)
+  };
 
-    requestsList.push(request);
-  });
+  requestsList.push(request);
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: requestsList });
 };
 
@@ -174,7 +172,9 @@ const testDataIntegration = ({
   buildComments({ acudiers: profiles.slice(0, acudiers / 5) });
 
   // Add requests
-  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 1] });
+  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 1], index: 0 });
+  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 1], index: 1 });
+  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 2], index: 2 });
 
   if (addLocalUsers) {
     addLocalTestUsers();

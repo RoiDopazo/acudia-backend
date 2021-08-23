@@ -61,8 +61,15 @@
   request: 'common/common-lambda-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
+# Requests
 - dataSource: getAcudierRequests
   type: Query
   field: getAcudierRequests
   request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+- dataSource: acudia
+  type: Mutation
+  field: createRequest
+  request: 'requests/createRequest-request-template.vtl'
   response: 'common/common-response-template.vtl'

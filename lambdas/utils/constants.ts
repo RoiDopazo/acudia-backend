@@ -9,7 +9,8 @@ export enum TABLE_NAMES {
 
 export enum INDEXES {
   INVERTED_INDEX = 'InvertedIndex',
-  ACUDIER_INDEX = 'AcudierIndex'
+  ACUDIER_INDEX = 'AcudierIndex',
+  CLIENT_INDEX = 'ClientIndex'
 }
 
 export enum PREFIXES {
@@ -19,7 +20,7 @@ export enum PREFIXES {
   ITEM = 'ITEM#',
   PROFILE = 'PROFILE',
   COMMENT = 'COMMENT#',
-  REQUEST = 'REQUEST_DATA'
+  REQUEST = 'REQUEST#'
 }
 export enum REQUEST_STATUS {
   PENDING = 'PENDING',
