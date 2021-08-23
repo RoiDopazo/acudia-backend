@@ -139,6 +139,21 @@ input SearchAssignmentsInput {
   query: SearchAssignmentsInputQuery
 }
 
+input CreateRequestInput {
+  acudier: String!
+  acudierName: String!
+  acudierPhoto: String
+  client: String
+  clientName: String!
+  clientPhoto: String
+  from: AWSDate!
+  to: AWSDate!
+  startHour: Float!
+  endHour: Float!
+  price: Float!
+  timestamp: Float!
+}
+
 #Outputs
 type AssignmentListResponse {
   items: [Assignment]
@@ -185,6 +200,7 @@ type Mutation {
   addAssignment(input: CreateAssignmentInput): Assignment
   updateAssignment(input: UpdateAssignmentInput): Boolean
   removeAssignment(input: RemoveAssignmentInput): Boolean
+  createRequest(input: CreateRequestInput): Request
 }
 
 # Define the schema

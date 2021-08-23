@@ -14,6 +14,7 @@ if (isLocal) {
 }
 
 const docClient = new AWS.DynamoDB.DocumentClient();
+const dynamodb = new AWS.DynamoDB();
 
 const DynamoDbOperations = {
   insertOrReplace: async (item, tableName) => {
@@ -215,6 +216,20 @@ const DynamoDbOperations = {
       .promise();
 
     return results;
+  },
+  deleteTable: ({ tableName }: { tableName: TABLE_NAMES }) => {
+    dynamodb.deleteTable(
+      {
+        TableName: tableName
+      },
+      function (err, data) {
+        if (err) {
+          console.error('Unable to delete table. Error JSON:', JSON.stringify(err, null, 2));
+        } else {
+          console.log('Deleted table. Table description JSON:', JSON.stringify(data, null, 2));
+        }
+      }
+    );
   }
 };
 export default DynamoDbOperations;

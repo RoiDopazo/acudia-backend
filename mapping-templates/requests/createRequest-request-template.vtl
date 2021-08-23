@@ -1,0 +1,29 @@
+$util.qr($ctx.args.input.put("createdAt", $util.time.nowEpochMilliSeconds())) 
+$util.qr($ctx.args.input.put("updatedAt", $util.time.nowEpochMilliSeconds())) 
+
+## FIXME: identity is only available when using aws dynamodb (not in local env)
+#if ($ctx.identity.username)
+  #set($CLIENT_ID = $ctx.identity.username)
+#else
+  #set($CLIENT_ID = "")
+#end
+
+#set($PK = "REQUEST#$util.autoId()")
+#set($SK = $ctx.args.input.timestamp)
+
+#set($ctx.args.input.client = $CLIENT_ID)
+#set($ctx.args.input.status = "PENDING")
+
+{
+  "version" : "2017-02-28",
+  "operation" : "PutItem",
+  "key": {
+    "PK": {
+      "S": "$PK"
+    },
+    "SK": {
+      "S": "$SK"
+    }
+  },
+  "attributeValues" : $util.dynamodb.toMapValuesJson($ctx.args.input),
+}
