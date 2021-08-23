@@ -9,9 +9,9 @@ $util.qr($ctx.args.input.put("updatedAt", $util.time.nowEpochMilliSeconds()))
 #end
 
 #set($PK = "REQUEST#$util.autoId()")
-#set($SK = $ctx.args.input.timestamp)
+#set($SK = $util.time.nowEpochMilliSeconds())
 
-#set($ctx.args.input.client = $CLIENT_ID)
+#set($ctx.args.input.client = "CLIENT#$CLIENT")
 #set($ctx.args.input.status = "PENDING")
 
 {

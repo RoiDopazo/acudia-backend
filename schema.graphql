@@ -50,6 +50,8 @@ type Request {
   client: String!
   clientName: String!
   clientPhoto: String
+  hosp: String!
+  hospName: String!
   from: AWSDate
   to: AWSDate
   startHour: Float
@@ -143,15 +145,15 @@ input CreateRequestInput {
   acudier: String!
   acudierName: String!
   acudierPhoto: String
-  client: String
   clientName: String!
   clientPhoto: String
   from: AWSDate!
   to: AWSDate!
+  hospId: String!
+  hospName: String!
   startHour: Float!
   endHour: Float!
   price: Float!
-  timestamp: Float!
 }
 
 #Outputs

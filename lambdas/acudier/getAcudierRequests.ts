@@ -1,7 +1,7 @@
 import middy from '@middy/core';
 import { Context, Handler } from 'aws-lambda';
 import { authenticationMiddleware } from '../middlewares/authenticationMiddleware';
-import { TABLE_NAMES, INDEXES } from '../utils/constants';
+import { TABLE_NAMES, INDEXES, PREFIXES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 
 const getAcudierRequests: Handler = async (event, context: Context, callback) => {
@@ -15,7 +15,7 @@ const getAcudierRequests: Handler = async (event, context: Context, callback) =>
       indexName: INDEXES.ACUDIER_INDEX,
       hashIndexOpts: {
         attrName: 'acudier',
-        attrValue: input.acudier,
+        attrValue: `${PREFIXES.ACUDIER}${input.acudier}`,
         operator: '='
       },
       filters: [
