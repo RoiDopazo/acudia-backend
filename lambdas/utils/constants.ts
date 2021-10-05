@@ -28,4 +28,9 @@ export enum REQUEST_STATUS {
   REJECTED = 'REJECTED'
 }
 
+export enum ROLES {
+  ACUDIER = 'ACUDIER',
+  CLIENT = 'CLIENT'
+}
+
 export const MAX_NUM_COMMENT_SEARCH_RESPONSE = 5;
