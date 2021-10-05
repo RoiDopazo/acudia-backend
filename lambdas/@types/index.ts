@@ -78,7 +78,9 @@ interface IRequest {
   acudierPhoto?: String;
   client: string;
   clientName: string;
-  clientPhoto?: String;
+  clientPhoto?: string;
+  hospId: string;
+  hospName: string;
   from: string;
   to: string;
   startHour: number;

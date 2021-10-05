@@ -2,7 +2,7 @@ import NAMES_DATA from './data/first-names.json';
 import { PREFIXES, REQUEST_STATUS, TABLE_NAMES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 import { formatTimeString, random } from '../utils/utils';
-import { addLocalTestUsers, addLocalTestAssignment } from './localTestUsers';
+import { addLocalTestUsers, addLocalTestAssignment, addLocalTestRequest } from './localTestUsers';
 
 const today = new Date();
 const todayString = today.toLocaleDateString('en-GB');
@@ -129,6 +129,8 @@ const buildRequests = ({ acudier, client, index }: { acudier: IProfile; client: 
     client: `${PREFIXES.CLIENT}${client.PK.split('#')[1]}`,
     clientName: `${client.name} ${client.secondName ?? ''}`.trim(),
     clientPhoto: client.photoUrl,
+    hospId: '10040',
+    hospName: 'Hospital San José',
     from: fromValues[index],
     to: toValues[index],
     startHour: random(10, 13) * 3600,
@@ -179,6 +181,7 @@ const testDataIntegration = ({
   if (addLocalUsers) {
     addLocalTestUsers();
     addLocalTestAssignment({ fromDate, toDate });
+    addLocalTestRequest();
   }
 };
 

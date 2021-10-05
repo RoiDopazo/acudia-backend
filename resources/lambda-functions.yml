@@ -39,6 +39,20 @@ getAcudierRequests:
     include:
       - 'dist/lambdas/**'
 
+getMyRequests:
+  handler: dist/lambdas/requests/getMyRequests.getMyRequestsHandler
+  iamRoleStatements:
+    - Effect: 'Allow'
+
+      Action:
+        - dynamodb:GetItem
+      Resource:
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+  package:
+    include:
+      - 'dist/lambdas/**'
+
 testDataIntegration:
   handler: dist/lambdas/test-data/testDataIntegration.testDataIntegration
   iamRoleStatements:

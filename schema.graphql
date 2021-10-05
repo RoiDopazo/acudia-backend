@@ -50,7 +50,7 @@ type Request {
   client: String!
   clientName: String!
   clientPhoto: String
-  hosp: String!
+  hospId: String!
   hospName: String!
   from: AWSDate
   to: AWSDate
@@ -59,6 +59,8 @@ type Request {
   price: Float
   createdAt: Float
   updatedAt: Float
+  hasStarted: Boolean
+  hasFinished: Boolean
 }
 
 type LastEvaluatedKey {
@@ -181,8 +183,15 @@ input QueryAcudierRequestsInput {
   status: String
 }
 
-type AcudierAvailabilityResponse {
-  items: [Request]
+input QueryMyRequestsInput {
+  role: String!
+  status: String
+  active: Boolean
+}
+
+type RequestResponse {
+  incoming: [Request]
+  active: [Request]
 }
 
 # Define the queries
@@ -192,7 +201,8 @@ type Query {
   getAcudierByID(input: QueryAcudierInput): Profile
   searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponseList
   getMyAssignments: AssignmentListResponse
-  getAcudierRequests(input: QueryAcudierRequestsInput): AcudierAvailabilityResponse
+  getAcudierRequests(input: QueryAcudierRequestsInput): RequestResponse
+  getMyRequests(input: QueryMyRequestsInput): RequestResponse
 }
 
 # Define the mutations
