@@ -189,9 +189,18 @@ input QueryMyRequestsInput {
   active: Boolean
 }
 
+type AcudierRequestResponse {
+  items: [Request]
+}
+
 type RequestResponse {
   incoming: [Request]
   active: [Request]
+}
+
+input RemoveRequestInput {
+  PK: String!
+  SK: String!
 }
 
 # Define the queries
@@ -201,7 +210,7 @@ type Query {
   getAcudierByID(input: QueryAcudierInput): Profile
   searchAssignments(input: SearchAssignmentsInput): SearchAssignmentResponseList
   getMyAssignments: AssignmentListResponse
-  getAcudierRequests(input: QueryAcudierRequestsInput): RequestResponse
+  getAcudierRequests(input: QueryAcudierRequestsInput): AcudierRequestResponse
   getMyRequests(input: QueryMyRequestsInput): RequestResponse
 }
 
@@ -213,6 +222,7 @@ type Mutation {
   updateAssignment(input: UpdateAssignmentInput): Boolean
   removeAssignment(input: RemoveAssignmentInput): Boolean
   createRequest(input: CreateRequestInput): Request
+  removeRequest(input: RemoveRequestInput): Boolean
 }
 
 # Define the schema
