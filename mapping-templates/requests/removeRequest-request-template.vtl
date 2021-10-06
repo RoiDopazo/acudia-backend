@@ -1,0 +1,39 @@
+## FIXME: identity is only available when using aws dynamodb (not in local env)
+#if ($ctx.identity.username)
+  #set($ID = $ctx.identity.username)
+#else
+  #set($ID = "")
+#end
+
+#set($PK = $ctx.args.input.PK)
+#set($SK = $ctx.args.input.SK)
+
+#set($CLIENT_ID = "CLIENT#$ID")
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "PK": {
+      "S": "$PK"
+    },
+    "SK": {
+      "S": "$SK"
+    }
+  },
+  "condition": {
+    "expression": "#client = :CLIENT_ID AND #status = :status",
+    "expressionValues": {
+      ":CLIENT_ID" : {
+        "S": "$CLIENT_ID"
+      },
+      ":status": {
+        "S": "REJECTED"
+      }
+    },
+    "expressionNames": {
+      "#client": "client",
+      "#status": "status"
+    }
+  }
+}

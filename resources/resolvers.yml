@@ -76,6 +76,12 @@
 
 - dataSource: acudia
   type: Mutation
+  field: removeRequest
+  request: 'requests/removeRequest-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+- dataSource: acudia
+  type: Mutation
   field: createRequest
   request: 'requests/createRequest-request-template.vtl'
   response: 'common/common-response-template.vtl'
