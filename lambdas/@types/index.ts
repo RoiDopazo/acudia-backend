@@ -1,4 +1,4 @@
-type REQUEST_STATUS = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+type REQUEST_STATUS = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'COMPLETED';
 
 interface IResult<T> {
   Items: T[];
@@ -14,6 +14,10 @@ interface ScanOutput<T> {
 
 interface QueryOutput<T> extends IResult<T> {}
 
+interface GetItemOutput<T> {
+  Item: T;
+}
+
 interface FiltersExpressions {
   filterExpression: string;
   filterExpressionAttrValues: object;
@@ -22,6 +26,7 @@ interface FiltersExpressions {
 
 interface IAttrComp {
   attrName: string;
+  attrName2?: string;
   attrValue: string | number;
   attrValue2?: string | number;
   operator: '<=' | '<' | '>' | '>=' | 'AND' | 'OR' | '=' | '!=' | 'BETWEEN' | 'begins_with';

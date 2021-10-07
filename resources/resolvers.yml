@@ -74,6 +74,12 @@
   request: 'common/common-lambda-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
+- dataSource: finishRequest
+  type: Mutation
+  field: finishRequest
+  request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
 - dataSource: acudia
   type: Mutation
   field: removeRequest

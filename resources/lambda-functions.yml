@@ -53,6 +53,21 @@ getMyRequests:
     include:
       - 'dist/lambdas/**'
 
+finishRequest:
+  handler: dist/lambdas/requests/finishRequest.finishRequestHandler
+  iamRoleStatements:
+    - Effect: 'Allow'
+
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+      Resource:
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+  package:
+    include:
+      - 'dist/lambdas/**'
+
 testDataIntegration:
   handler: dist/lambdas/test-data/testDataIntegration.testDataIntegration
   iamRoleStatements:

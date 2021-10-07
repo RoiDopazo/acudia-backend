@@ -17,7 +17,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 const dynamodb = new AWS.DynamoDB();
 
 const DynamoDbOperations = {
-  insertOrReplace: async (item, tableName) => {
+  insertOrReplace: async <T>({ item, tableName }: { tableName: TABLE_NAMES; item: T }): Promise<T> => {
     const params = {
       TableName: tableName,
       Item: item
@@ -27,21 +27,23 @@ const DynamoDbOperations = {
     return item;
   },
 
-  find: async (id, tableName, gsi = false) => {
-    const invertedIndex = gsi ? { IndexName: 'InvertedIndex' } : {};
-
+  find: async <T>({
+    id,
+    tableName,
+    indexName
+  }: {
+    id: any;
+    tableName: TABLE_NAMES;
+    indexName?: INDEXES;
+  }): Promise<GetItemOutput<T>> => {
     const params = {
       Key: id,
       TableName: tableName,
-      ...invertedIndex
+      IndexName: indexName
     };
 
-    const result = await docClient.get(params).promise();
-    if (_.isEmpty(result)) {
-      return null;
-    } else {
-      return result.Item;
-    }
+    const result = ((await docClient.get(params).promise()) as any) as GetItemOutput<T>;
+    return result;
   },
 
   getWhereIdIn: async (ids: string[], tableName: string) => {
@@ -170,21 +172,44 @@ const DynamoDbOperations = {
     return result;
   },
 
-  update: async ({ tableName, id, data }) => {
+  update: async ({
+    tableName,
+    id,
+    data,
+    conditions = []
+  }: {
+    tableName: TABLE_NAMES;
+    id: any;
+    data: IAttrComp[];
+    conditions?: IAttrComp[];
+  }) => {
     const updateExpressions = [] as string[];
     const expressionsValues = {};
-    for (const fieldName of Object.keys(data)) {
-      const fieldValue = data[fieldName];
-      updateExpressions.push(`${fieldName} = :${fieldName}`);
-      expressionsValues[`:${fieldName}`] = fieldValue;
-    }
+    const expressionsNames = {};
+    const conditionsStr: string[] = [];
+
+    data.forEach((element) => {
+      const attrName2 = element.attrName2 ? element.attrName2 : element.attrName;
+      updateExpressions.push(`#${element.attrName} ${element.operator} :${attrName2}`);
+      expressionsValues[`:${attrName2}`] = element.attrValue;
+      expressionsNames[`#${element.attrName}`] = element.attrName;
+    });
+
+    conditions.forEach((condition) => {
+      expressionsValues[`:${condition.attrName}`] = condition.attrValue;
+      expressionsNames[`#${condition.attrName}`] = condition.attrName;
+      conditionsStr.push(`#${condition.attrName} ${condition.operator} :${condition.attrName}`);
+    });
+
     const updateExpression = 'set ' + updateExpressions.join(', ');
 
     const params = {
       TableName: tableName,
-      Key: { id },
+      Key: id,
       UpdateExpression: updateExpression,
-      ExpressionAttributeValues: expressionsValues
+      ExpressionAttributeNames: expressionsNames,
+      ExpressionAttributeValues: expressionsValues,
+      ConditionExpression: conditionsStr.length ? conditionsStr.join(' AND ') : undefined
     };
 
     const result = await docClient.update(params).promise();
