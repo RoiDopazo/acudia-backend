@@ -25,7 +25,8 @@ export enum PREFIXES {
 export enum REQUEST_STATUS {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED'
+  REJECTED = 'REJECTED',
+  COMPLETED = 'COMPLETED'
 }
 
 export enum ROLES {

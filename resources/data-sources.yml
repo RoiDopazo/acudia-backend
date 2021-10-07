@@ -47,6 +47,11 @@
     functionName: 'getMyRequests'
 
 - type: AWS_LAMBDA
+  name: 'finishRequest'
+  config:
+    functionName: 'finishRequest'
+
+- type: AWS_LAMBDA
   name: 'testDataIntegration'
   config:
     functionName: 'testDataIntegration'

@@ -203,6 +203,14 @@ input RemoveRequestInput {
   SK: String!
 }
 
+input FinishRequestInput {
+  PK: String!
+  SK: String!
+  rating: Float!
+  author: String!
+  comment: String
+}
+
 # Define the queries
 type Query {
   getProfile(input: GetProfileInput): Profile
@@ -223,6 +231,7 @@ type Mutation {
   removeAssignment(input: RemoveAssignmentInput): Boolean
   createRequest(input: CreateRequestInput): Request
   removeRequest(input: RemoveRequestInput): Boolean
+  finishRequest(input: FinishRequestInput): Boolean
 }
 
 # Define the schema
