@@ -125,13 +125,15 @@ const DynamoDbOperations = {
     indexName,
     hashIndexOpts,
     rangeIndexOpts,
-    filters
+    filters,
+    filterJoinCondition = 'AND'
   }: {
     tableName: TABLE_NAMES;
     indexName?: INDEXES;
     hashIndexOpts: IAttrComp;
     rangeIndexOpts?: IAttrComp;
     filters: IAttrComp[];
+    filterJoinCondition?: 'AND' | 'OR';
   }): Promise<QueryOutput<T>> => {
     const { attrName, attrValue, operator } = hashIndexOpts;
     const rangeAttrName = rangeIndexOpts?.attrName;
@@ -139,7 +141,8 @@ const DynamoDbOperations = {
     const rangeOperator = rangeIndexOpts?.operator;
 
     const { filterExpression, filterExpressionAttrValues, filterExpressionAttrNames } = DynamoDbUtils.buildFilters({
-      filters
+      filters,
+      joinCondition: filterJoinCondition
     });
 
     const keyConditionExpression = [`${attrName} ${operator} :hkey`];

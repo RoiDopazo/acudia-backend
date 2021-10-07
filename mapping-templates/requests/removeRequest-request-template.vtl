@@ -22,13 +22,16 @@
     }
   },
   "condition": {
-    "expression": "#client = :CLIENT_ID AND #status = :status",
+    "expression": "#client = :CLIENT_ID AND (#status = :rejectedStatus OR #status = :pendingStatus)",
     "expressionValues": {
       ":CLIENT_ID" : {
         "S": "$CLIENT_ID"
       },
-      ":status": {
+      ":rejectedStatus": {
         "S": "REJECTED"
+      },
+      ":pendingStatus": {
+        "S": "PENDING"
       }
     },
     "expressionNames": {

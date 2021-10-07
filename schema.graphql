@@ -196,6 +196,7 @@ type AcudierRequestResponse {
 type RequestResponse {
   incoming: [Request]
   active: [Request]
+  completed: [Request]
 }
 
 input RemoveRequestInput {

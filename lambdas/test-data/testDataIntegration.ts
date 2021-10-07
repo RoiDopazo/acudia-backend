@@ -111,18 +111,29 @@ const buildComments = ({ acudiers }: { acudiers: IProfile[] }) => {
   DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: commentList });
 };
 
-const buildRequests = ({ acudier, client, index }: { acudier: IProfile; client: IProfile; index: number }) => {
+export const buildRequests = ({
+  acudier,
+  client,
+  from,
+  to,
+  status,
+  index
+}: {
+  acudier: IProfile;
+  client: IProfile;
+  index: number;
+  from: string;
+  to: string;
+  status: REQUEST_STATUS;
+}) => {
   const requestsList: IRequest[] = [];
 
   const creationDate = Math.round(Date.now() / 10);
 
-  const fromValues = ['2021-08-12', '2021-09-20', '2021-10-19'];
-  const toValues = ['2021-08-18', '2021-09-23', '2021-10-20'];
-
   const request: IRequest = {
     PK: `${PREFIXES.REQUEST}${index}`,
-    SK: Date.now().toString(),
-    status: REQUEST_STATUS.PENDING,
+    SK: new Date(from).getTime().toString(),
+    status: status,
     acudier: `${PREFIXES.ACUDIER}${acudier.PK.split('#')[1]}`,
     acudierName: `${acudier.name} ${acudier.secondName ?? ''}`.trim(),
     acudierPhoto: acudier.photoUrl,
@@ -131,8 +142,8 @@ const buildRequests = ({ acudier, client, index }: { acudier: IProfile; client: 
     clientPhoto: client.photoUrl,
     hospId: '10040',
     hospName: 'Hospital San José',
-    from: fromValues[index],
-    to: toValues[index],
+    from: from,
+    to: to,
     startHour: random(10, 13) * 3600,
     endHour: random(16, 19) * 3600,
     price: random(120, 300),
@@ -174,9 +185,46 @@ const testDataIntegration = ({
   buildComments({ acudiers: profiles.slice(0, acudiers / 5) });
 
   // Add requests
-  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 1], index: 0 });
-  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 1], index: 1 });
-  buildRequests({ acudier: profiles[0], client: profiles[acudiers + 2], index: 2 });
+  buildRequests({
+    acudier: profiles[0],
+    client: profiles[acudiers + 1],
+    index: 0,
+    from: '2021-08-12',
+    to: '2021-08-15',
+    status: REQUEST_STATUS.REJECTED
+  });
+  buildRequests({
+    acudier: profiles[1],
+    client: profiles[acudiers + 1],
+    index: 1,
+    from: '2021-12-12',
+    to: '2021-12-15',
+    status: REQUEST_STATUS.PENDING
+  });
+  buildRequests({
+    acudier: profiles[1],
+    client: profiles[acudiers + 1],
+    index: 2,
+    from: '2021-08-20',
+    to: '2021-08-24',
+    status: REQUEST_STATUS.PENDING
+  });
+  buildRequests({
+    acudier: profiles[3],
+    client: profiles[acudiers + 1],
+    index: 3,
+    from: '2021-10-04',
+    to: '2021-10-30',
+    status: REQUEST_STATUS.ACCEPTED
+  });
+  buildRequests({
+    acudier: profiles[2],
+    client: profiles[acudiers + 1],
+    index: 4,
+    from: '2021-10-04',
+    to: '2021-10-30',
+    status: REQUEST_STATUS.ACCEPTED
+  });
 
   if (addLocalUsers) {
     addLocalTestUsers();

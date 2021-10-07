@@ -29,7 +29,7 @@ interface IAttrComp {
   attrName2?: string;
   attrValue: string | number;
   attrValue2?: string | number;
-  operator: '<=' | '<' | '>' | '>=' | 'AND' | 'OR' | '=' | '!=' | 'BETWEEN' | 'begins_with';
+  operator: '<=' | '<' | '>' | '>=' | 'AND' | 'OR' | '=' | '<>' | 'BETWEEN' | 'begins_with';
 }
 
 interface IProfile {

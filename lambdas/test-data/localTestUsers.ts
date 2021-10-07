@@ -1,6 +1,7 @@
 import { PREFIXES, REQUEST_STATUS, TABLE_NAMES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 import { formatTimeString, random } from '../utils/utils';
+import { buildRequests } from './testDataIntegration';
 
 const LOCAL_HOSP_ID = '10040';
 const today = new Date();
@@ -10,6 +11,18 @@ const acudierName = 'roi-acudier-test';
 
 const clientPhoto = 'https://randomuser.me/api/portraits/men/99.jpg';
 const acudierPhoto = 'https://randomuser.me/api/portraits/men/98.jpg';
+
+const acudierProfile = {
+  PK: `${PREFIXES.ACUDIER}${process.env.LOCAL_EMAIL}`,
+  name: acudierName,
+  photo: acudierPhoto
+};
+
+const clientProfile = {
+  PK: `${PREFIXES.ACUDIER}${process.env.LOCAL_EMAIL2}`,
+  name: clientName,
+  photo: clientPhoto
+};
 
 export const addLocalTestUsers = () => {
   const profile1: IProfile = {
@@ -65,37 +78,52 @@ export const addLocalTestAssignment = ({ fromDate, toDate }: { fromDate: string;
 };
 
 export const addLocalTestRequest = () => {
-  const requestsList: IRequest[] = [];
-
-  const creationDate = Math.round(Date.now() / 10);
-
-  const fromValues = ['2021-08-12', '2021-09-20', '2021-10-19'];
-  const toValues = ['2021-08-18', '2021-09-23', '2021-10-20'];
-  const statusValues = [REQUEST_STATUS.PENDING, REQUEST_STATUS.ACCEPTED, REQUEST_STATUS.REJECTED];
-
-  [0, 1, 2].forEach((_, index) => {
-    const request: IRequest = {
-      PK: `${PREFIXES.REQUEST}${index}`,
-      SK: `${new Date(fromValues[index]).getTime()}`,
-      status: statusValues[index],
-      acudier: `${PREFIXES.ACUDIER}${process.env.LOCAL_EMAIL}`,
-      acudierName: acudierName,
-      acudierPhoto: acudierPhoto,
-      client: `${PREFIXES.CLIENT}${process.env.LOCAL_EMAIL2}`,
-      clientName: clientName,
-      clientPhoto: clientPhoto,
-      from: fromValues[index],
-      to: toValues[index],
-      hospId: '10040',
-      hospName: 'Hospital San José',
-      startHour: random(10, 13) * 3600,
-      endHour: random(16, 19) * 3600,
-      price: random(120, 300),
-
-      createdAt: parseInt(`${creationDate}0`),
-      updatedAt: parseInt(`${creationDate}0`)
-    };
-    requestsList.push(request);
+  buildRequests({
+    acudier: acudierProfile as any,
+    client: clientProfile as any,
+    index: 9990,
+    from: '2021-08-12',
+    to: '2021-08-15',
+    status: REQUEST_STATUS.REJECTED
   });
-  DynamoDbOperations.batchAdd({ tableName: TABLE_NAMES.ACUDIA_TABLE, data: requestsList });
+  buildRequests({
+    acudier: acudierProfile as any,
+    client: clientProfile as any,
+    index: 9991,
+    from: '2021-12-12',
+    to: '2021-12-15',
+    status: REQUEST_STATUS.PENDING
+  });
+  buildRequests({
+    acudier: acudierProfile as any,
+    client: clientProfile as any,
+    index: 9992,
+    from: '2021-08-20',
+    to: '2021-08-24',
+    status: REQUEST_STATUS.PENDING
+  });
+  buildRequests({
+    acudier: acudierProfile as any,
+    client: clientProfile as any,
+    index: 9993,
+    from: '2021-10-04',
+    to: '2021-10-30',
+    status: REQUEST_STATUS.ACCEPTED
+  });
+  buildRequests({
+    acudier: acudierProfile as any,
+    client: clientProfile as any,
+    index: 9994,
+    from: '2021-10-04',
+    to: '2021-10-05',
+    status: REQUEST_STATUS.ACCEPTED
+  });
+  buildRequests({
+    acudier: acudierProfile as any,
+    client: clientProfile as any,
+    index: 9995,
+    from: '2021-10-01',
+    to: '2021-10-03',
+    status: REQUEST_STATUS.COMPLETED
+  });
 };
