@@ -47,47 +47,52 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       ]
     });
 
-    const acudiersData: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
-      tableName: TABLE_NAMES.ACUDIA_TABLE,
-      filterJoinCondition: 'OR',
-      filters: assignments.Items?.map((assignment) => ({
-        attrName: 'PK',
-        attrValue: `${PREFIXES.ACUDIER}${assignment.acudierId}`,
-        operator: '='
-      }))
-    });
-
-    const acudiers = acudiersData.result.Items.filter((acData) => acData.SK.includes(PREFIXES.PROFILE));
-
-    const finalData: any[] = [];
-
-    acudiers.forEach((acudier) => {
-      const acudierAssignments = assignments.Items.filter(
-        (assign) => acudier.PK === `${PREFIXES.ACUDIER}${assign.acudierId}`
-      );
-      const comments =
-        acudiersData.result.Items.filter((aData) => aData.SK.startsWith(PREFIXES.COMMENT) && aData.PK === acudier.PK) ??
-        [];
-
-      finalData.push({
-        assignment: acudierAssignments,
-        acudier: {
-          profile: acudier,
-          comments: comments.slice(0, MAX_NUM_COMMENT_SEARCH_RESPONSE)
-        }
+    if (assignments.Count > 0) {
+      const acudiersData: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
+        tableName: TABLE_NAMES.ACUDIA_TABLE,
+        filterJoinCondition: 'OR',
+        filters: assignments.Items?.map((assignment) => ({
+          attrName: 'PK',
+          attrValue: `${PREFIXES.ACUDIER}${assignment.acudierId}`,
+          operator: '='
+        }))
       });
-    });
 
-    const result = {
-      items: finalData,
-      pagination: {
-        lastEvaluatedKey: assignments.LastEvaluatedKey,
-        count: assignments.Count
-      }
-    };
+      const acudiers = acudiersData.result.Items.filter((acData) => acData.SK.includes(PREFIXES.PROFILE));
 
-    callback('', result);
-    return result;
+      const finalData: any[] = [];
+
+      acudiers.forEach((acudier) => {
+        const acudierAssignments = assignments.Items.filter(
+          (assign) => acudier.PK === `${PREFIXES.ACUDIER}${assign.acudierId}`
+        );
+        const comments =
+          acudiersData.result.Items.filter(
+            (aData) => aData.SK.startsWith(PREFIXES.COMMENT) && aData.PK === acudier.PK
+          ) ?? [];
+
+        finalData.push({
+          assignment: acudierAssignments,
+          acudier: {
+            profile: acudier,
+            comments: comments.slice(0, MAX_NUM_COMMENT_SEARCH_RESPONSE)
+          }
+        });
+      });
+
+      const result = {
+        items: finalData,
+        pagination: {
+          lastEvaluatedKey: assignments.LastEvaluatedKey,
+          count: assignments.Count
+        }
+      };
+      callback('', result);
+      return result;
+    }
+
+    callback('');
+    return null;
   } catch (err) {
     console.error(err);
     return err;
