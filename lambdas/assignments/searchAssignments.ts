@@ -92,7 +92,9 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
     }
 
     callback('');
-    return null;
+    return {
+      items: []
+    };
   } catch (err) {
     console.error(err);
     return err;
