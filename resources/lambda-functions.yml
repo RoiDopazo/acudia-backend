@@ -14,13 +14,14 @@ searchAssignments:
   handler: dist/lambdas/assignments/searchAssignments.searchAssignmentHandler
   iamRoleStatements:
     - Effect: 'Allow'
-
       Action:
-        - dynamodb:GetItem
-        - dynamodb:PutItem
+        - dynamodb:Query
+        - dynamodb:Scan
       Resource:
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable/*'
   package:
     include:
       - 'dist/lambdas/**'
@@ -29,9 +30,8 @@ getAcudierRequests:
   handler: dist/lambdas/acudier/getAcudierRequests.getAcudierRequestsHandler
   iamRoleStatements:
     - Effect: 'Allow'
-
       Action:
-        - dynamodb:GetItem
+        - dynamodb:Query
       Resource:
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
@@ -43,9 +43,8 @@ getMyRequests:
   handler: dist/lambdas/requests/getMyRequests.getMyRequestsHandler
   iamRoleStatements:
     - Effect: 'Allow'
-
       Action:
-        - dynamodb:GetItem
+        - dynamodb:Query
       Resource:
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
@@ -57,7 +56,6 @@ finishRequest:
   handler: dist/lambdas/requests/finishRequest.finishRequestHandler
   iamRoleStatements:
     - Effect: 'Allow'
-
       Action:
         - dynamodb:GetItem
         - dynamodb:UpdateItem
@@ -72,9 +70,7 @@ answerRequest:
   handler: dist/lambdas/requests/answerRequest.answerRequestHandler
   iamRoleStatements:
     - Effect: 'Allow'
-
       Action:
-        - dynamodb:GetItem
         - dynamodb:UpdateItem
       Resource:
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
