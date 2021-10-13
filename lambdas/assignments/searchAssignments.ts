@@ -47,7 +47,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       ]
     });
 
-    if (assignments.Count > 0) {
+    if (!assignments || assignments?.Count > 0) {
       const acudiersData: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
         tableName: TABLE_NAMES.ACUDIA_TABLE,
         filterJoinCondition: 'OR',
