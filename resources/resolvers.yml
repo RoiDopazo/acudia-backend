@@ -80,6 +80,12 @@
   request: 'common/common-lambda-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
+- dataSource: answerRequest
+  type: Mutation
+  field: answerRequest
+  request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
 - dataSource: acudia
   type: Mutation
   field: removeRequest

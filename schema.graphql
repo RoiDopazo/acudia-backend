@@ -212,6 +212,12 @@ input FinishRequestInput {
   comment: String
 }
 
+input AnswerRequestInput {
+  PK: String!
+  SK: String!
+  status: String!
+}
+
 # Define the queries
 type Query {
   getProfile(input: GetProfileInput): Profile
@@ -233,6 +239,7 @@ type Mutation {
   createRequest(input: CreateRequestInput): Request
   removeRequest(input: RemoveRequestInput): Boolean
   finishRequest(input: FinishRequestInput): Boolean
+  answerRequest(input: AnswerRequestInput): Boolean
 }
 
 # Define the schema

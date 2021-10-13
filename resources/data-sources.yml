@@ -52,6 +52,11 @@
     functionName: 'finishRequest'
 
 - type: AWS_LAMBDA
+  name: 'answerRequest'
+  config:
+    functionName: 'answerRequest'
+
+- type: AWS_LAMBDA
   name: 'testDataIntegration'
   config:
     functionName: 'testDataIntegration'

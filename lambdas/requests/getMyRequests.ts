@@ -56,7 +56,11 @@ const getMyRequests: Handler = async (event, context: Context, callback) => {
             }
           }
           if (value.status === 'PENDING') {
-            return [[...incoming, { ...value, hasStarted: now > startDate.getTime() }], active, completed];
+            if (!isClient && now > startDate.getTime()) {
+              return [incoming, active, completed];
+            } else {
+              return [[...incoming, { ...value, hasStarted: now > startDate.getTime() }], active, completed];
+            }
           }
           return [[...incoming, value], active, completed];
         } else {
