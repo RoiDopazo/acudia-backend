@@ -59,6 +59,7 @@ finishRequest:
       Action:
         - dynamodb:GetItem
         - dynamodb:UpdateItem
+        - dynamodb:PutItem
       Resource:
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
         - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
