@@ -82,7 +82,7 @@ const finishRequest: Handler = async (event, context: Context, callback) => {
           PK: request.Item.acudier,
           SK: `${PREFIXES.COMMENT}${Date.now()}`,
           author: author,
-          date: new Date().toLocaleDateString('nl'), // Format required dd-MM-yyyy
+          date: new Date().toISOString().split('T')[0],
           comment: comment,
           rating: rating
         }
