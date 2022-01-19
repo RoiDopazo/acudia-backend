@@ -178,6 +178,25 @@ type SearchAssignmentResponse {
   assignment: [Assignment]
 }
 
+type AcudierResponse {
+  name: String
+  photoUrl: String
+}
+
+type HospResponse {
+  name: String
+}
+
+type ProfileStatsResponse {
+  acudier: AcudierResponse
+  hosp: HospResponse
+  jobsCompleted: Float
+}
+
+type CommentResponse {
+  items: [Comment]
+}
+
 input QueryAcudierRequestsInput {
   acudier: String!
   status: String
@@ -218,6 +237,10 @@ input AnswerRequestInput {
   status: String!
 }
 
+input ProfileStatsRequestInput {
+  role: String!
+}
+
 # Define the queries
 type Query {
   getProfile(input: GetProfileInput): Profile
@@ -227,6 +250,8 @@ type Query {
   getMyAssignments: AssignmentListResponse
   getAcudierRequests(input: QueryAcudierRequestsInput): AcudierRequestResponse
   getMyRequests(input: QueryMyRequestsInput): RequestResponse
+  getProfileStats(input: ProfileStatsRequestInput): ProfileStatsResponse
+  getComments(input: ProfileStatsRequestInput): CommentResponse
 }
 
 # Define the mutations

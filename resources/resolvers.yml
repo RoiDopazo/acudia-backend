@@ -30,6 +30,18 @@
   request: 'profile/profile-request-template.vtl'
   response: 'common/common-response-template.vtl'
 
+- dataSource: getProfileStats
+  type: Query
+  field: getProfileStats
+  request: 'common/common-lambda-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
+- dataSource: acudia
+  type: Query
+  field: getComments
+  request: 'profile/profile-comments-request-template.vtl'
+  response: 'common/common-response-template.vtl'
+
 # Assignments
 - dataSource: assignments
   type: Query
