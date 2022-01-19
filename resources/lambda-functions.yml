@@ -94,3 +94,18 @@ testDataIntegration:
   package:
     include:
       - 'dist/lambdas/**'
+
+getProfileStats:
+  handler: dist/lambdas/profile/profileStats.profileStatsHandler
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - dynamodb:Query
+      Resource:
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AssignmentsTable/*'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable'
+        - 'arn:aws:dynamodb:${self:custom.region}:${self:custom.accountId}:table/AcudiaTable/*'
+  package:
+    include:
+      - 'dist/lambdas/**'

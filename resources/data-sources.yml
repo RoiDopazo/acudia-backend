@@ -60,3 +60,8 @@
   name: 'testDataIntegration'
   config:
     functionName: 'testDataIntegration'
+
+- type: AWS_LAMBDA
+  name: 'getProfileStats'
+  config:
+    functionName: 'getProfileStats'

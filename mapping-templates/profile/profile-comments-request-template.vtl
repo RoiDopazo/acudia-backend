@@ -1,0 +1,29 @@
+#if ($ctx.identity.username)
+  #set($ID = $ctx.identity.username)
+#else
+  #set($ID = "")
+#end
+
+#set($PK_value = "#$ID")
+#set($PK = "$ctx.args.input.role$PK_value")
+
+{
+    "version" : "2017-02-28",
+    "operation" : "Query",
+    "query" : {
+      "expression": "(#PK = :pk AND begins_with(#SK, :sk))",
+      "expressionValues": {
+        ":pk": {
+          "S": "ACUDIER#10/13/2021-2"
+        },
+        ":sk": {
+          "S": "COMMENT"
+        }
+      },
+      "expressionNames": {
+        "#PK": "PK",
+        "#SK": "SK"
+      }
+    },
+    "consistentRead" : true
+}
