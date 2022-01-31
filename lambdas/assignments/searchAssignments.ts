@@ -4,7 +4,7 @@ import { authenticationMiddleware } from '../middlewares/authenticationMiddlewar
 import { MIN_FARE, MAX_FARE, PREFIXES, TABLE_NAMES, MAX_NUM_COMMENT_SEARCH_RESPONSE } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 
-const searchAssignment: Handler = async (event, context: Context, callback) => {
+export const searchAssignment: Handler = async (event, context: Context, callback) => {
   console.info(`[LAMBDA] ${context.functionName}`, event);
 
   const { input, identity } = event.custom;
@@ -47,7 +47,7 @@ const searchAssignment: Handler = async (event, context: Context, callback) => {
       ]
     });
 
-    if (!assignments || assignments?.Count > 0) {
+    if (assignments && assignments?.Count > 0) {
       const acudiersData: ScanOutput<IProfile | IComment> = await DynamoDbOperations.list<IProfile>({
         tableName: TABLE_NAMES.ACUDIA_TABLE,
         filterJoinCondition: 'OR',

@@ -4,7 +4,7 @@ import { authenticationMiddleware } from '../middlewares/authenticationMiddlewar
 import { TABLE_NAMES, PREFIXES, REQUEST_STATUS } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 
-const answerRequest: Handler = async (event, context: Context, callback) => {
+export const answerRequest: Handler = async (event, context: Context, callback) => {
   const { input, identity } = event.custom;
   const { PK: requestPK, SK: requestSK, status } = input;
 

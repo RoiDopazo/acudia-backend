@@ -4,7 +4,7 @@ import { authenticationMiddleware } from '../middlewares/authenticationMiddlewar
 import { TABLE_NAMES, INDEXES, PREFIXES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 
-const getAcudierRequests: Handler = async (event, context: Context, callback) => {
+export const getAcudierRequests: Handler = async (event, context: Context, callback) => {
   console.info(`[LAMBDA] ${context.functionName}`, event);
 
   const { input, identity } = event.custom;
