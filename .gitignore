@@ -13,3 +13,4 @@ dist
 
 # Files for local development
 .local
+coverage

@@ -4,11 +4,10 @@ import { authenticationMiddleware } from '../middlewares/authenticationMiddlewar
 import { TABLE_NAMES, INDEXES, PREFIXES, ROLES, REQUEST_STATUS } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 
-const getMyRequests: Handler = async (event, context: Context, callback) => {
+export const getMyRequests: Handler = async (event, context: Context, callback) => {
   const { input, identity } = event.custom;
 
   const isClient = input.role.toUpperCase() === ROLES.CLIENT;
-  console.log('isClient: ', isClient);
 
   const computedStatus =
     input.status === REQUEST_STATUS.COMPLETED && !isClient

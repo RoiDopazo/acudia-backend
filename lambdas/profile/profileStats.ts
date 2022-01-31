@@ -5,7 +5,7 @@ import { PREFIXES, TABLE_NAMES, INDEXES, ROLES } from '../utils/constants';
 import DynamoDbOperations from '../utils/dynamo-operations';
 import { REQUEST_STATUS } from '../utils/constants';
 
-const profileStats: Handler = async (event, context: Context, callback) => {
+export const profileStats: Handler = async (event, context: Context, callback) => {
   console.info(`[LAMBDA] ${context.functionName}`, event);
 
   const { input, identity } = event.custom;
@@ -18,7 +18,7 @@ const profileStats: Handler = async (event, context: Context, callback) => {
       indexName: isClient ? INDEXES.CLIENT_INDEX : INDEXES.ACUDIER_INDEX,
       hashIndexOpts: {
         attrName: isClient ? 'client' : 'acudier',
-        attrValue: `${isClient ? PREFIXES.CLIENT : PREFIXES.ACUDIER}${'roidopazo@gmail.com'}`,
+        attrValue: `${isClient ? PREFIXES.CLIENT : PREFIXES.ACUDIER}${identity}`,
         operator: '='
       },
       filterJoinCondition: 'OR',
@@ -58,11 +58,11 @@ const profileStats: Handler = async (event, context: Context, callback) => {
 
     const result = {
       acudier: {
-        name: bestAcudier.acudierName,
-        photoUrl: bestAcudier.acudierPhoto
+        name: bestAcudier?.acudierName,
+        photoUrl: bestAcudier?.acudierPhoto
       },
       hosp: {
-        name: bestHosp.hospName
+        name: bestHosp?.hospName
       },
       jobsCompleted: requests.Count
     };
